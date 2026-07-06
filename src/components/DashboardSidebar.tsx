@@ -12,7 +12,6 @@ import {
   ShieldCheck,
   ArrowLeft,
   Briefcase,
-  User,
   ShieldAlert,
 } from "lucide-react";
 
@@ -42,35 +41,35 @@ export default function DashboardSidebar() {
   };
 
   return (
-    <aside className="w-64 glass border-r border-forest-100/20 dark:border-forest-900/20 flex flex-col min-h-screen">
+    <aside className="w-64 glass border-r border-[#D6D3D1] flex flex-col min-h-screen bg-white">
       {/* Brand Header */}
-      <div className="p-6 border-b border-forest-100/10 dark:border-forest-900/20">
+      <div className="p-6 border-b border-[#E7E5E4]">
         <Link href="/" className="flex items-center gap-2 group">
-          <span className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-forest-700 via-forest-500 to-gold-500 bg-clip-text text-transparent">
+          <span className="text-2xl font-extrabold tracking-tight text-[#166534] font-serif">
             JABAR
           </span>
-          <span className="text-[10px] uppercase tracking-widest font-semibold px-2 py-0.5 rounded bg-gold-400 text-gold-950">
+          <span className="text-[10px] uppercase tracking-widest font-semibold px-2 py-0.5 rounded-[4px] bg-[#A47148] text-white">
             Portal
           </span>
         </Link>
-        <p className="mt-2 text-[10px] uppercase font-bold tracking-widest text-forest-700 dark:text-forest-300">
+        <p className="mt-2 text-[10px] uppercase font-bold tracking-widest text-[#57534E]">
           Role: {role === "admin" ? "Super Admin" : "UMKM Partner"}
         </p>
       </div>
 
       {/* Role Toggle Shortcut inside Sidebar */}
-      <div className="px-4 py-3 border-b border-forest-100/10 dark:border-forest-900/20 bg-forest-50/20 dark:bg-forest-950/20">
+      <div className="px-4 py-3 border-b border-[#E7E5E4] bg-[#F5F5EB]">
         <button
           onClick={toggleRole}
-          className="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-lg text-xs font-semibold bg-white dark:bg-forest-900/40 border border-forest-100/50 hover:bg-forest-100/10 transition-all duration-200"
+          className="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-[8px] bg-white border border-[#D6D3D1] hover:bg-[#F5F5EB] cursor-pointer transition-all duration-200"
         >
-          <div className="flex items-center gap-1.5 text-forest-800 dark:text-forest-200">
+          <div className="flex items-center gap-1.5 text-[#1C1917]">
             {role === "admin" ? (
-              <ShieldAlert className="w-3.5 h-3.5 text-amber-500" />
+              <ShieldAlert className="w-3.5 h-3.5 text-amber-600" />
             ) : (
-              <Briefcase className="w-3.5 h-3.5 text-forest-500" />
+              <Briefcase className="w-3.5 h-3.5 text-[#166534]" />
             )}
-            <span>Switch to {role === "admin" ? "SME Portal" : "Admin Portal"}</span>
+            <span className="text-xs font-semibold">Switch to {role === "admin" ? "SME Portal" : "Admin Portal"}</span>
           </div>
         </button>
       </div>
@@ -84,10 +83,10 @@ export default function DashboardSidebar() {
             <Link
               key={link.name}
               href={link.href}
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
+              className={`flex items-center gap-3 px-4 py-3 rounded-[12px] text-sm font-medium transition-all duration-200 ${
                 isActive
-                  ? "bg-forest-700 text-white shadow-md shadow-forest-950/10 font-semibold"
-                  : "text-forest-900 dark:text-forest-100 hover:bg-forest-200/60 dark:hover:bg-forest-800/40 hover:text-forest-950 dark:hover:text-white"
+                  ? "bg-[#166534] text-white font-semibold"
+                  : "text-[#57534E] hover:bg-[#F5F5EB] hover:text-[#1C1917]"
               }`}
             >
               <Icon className="w-4.5 h-4.5" />
@@ -98,12 +97,12 @@ export default function DashboardSidebar() {
       </nav>
 
       {/* Footer / Actions */}
-      <div className="p-4 border-t border-forest-100/10 dark:border-forest-900/20">
+      <div className="p-4 border-t border-[#E7E5E4]">
         <Link
           href="/"
-          className="w-full flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl border border-forest-400/50 hover:border-forest-600 hover:bg-forest-200/40 dark:hover:bg-forest-900/20 text-xs font-bold text-forest-800 dark:text-forest-300 transition-all duration-200"
+          className="w-full flex items-center justify-center gap-2 px-4 py-3.5 rounded-[12px] border border-[#A8A29E] hover:border-[#166534] hover:bg-[#F5F5EB] text-xs font-bold text-[#1C1917] cursor-pointer transition-all duration-200"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="w-4 h-4 text-[#166534]" />
           <span>Exit to Public Directory</span>
         </Link>
       </div>

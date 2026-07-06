@@ -8,7 +8,7 @@ import { useDemo } from "@/context/DemoContext";
 import { ShieldCheck, ArrowLeft, Send, CheckCircle, MapPin, Calendar, HelpCircle, FileText, Check, Coffee, Scissors, Hammer, Building2 } from "lucide-react";
 
 function CompanyLogo({ logo }: { logo?: string }) {
-  const cls = "w-8 h-8";
+  const cls = "w-8 h-8 text-[#166534]";
   if (logo === "coffee") return <Coffee className={cls} />;
   if (logo === "textile") return <Scissors className={cls} />;
   if (logo === "craft") return <Hammer className={cls} />;
@@ -22,7 +22,6 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
   const { products, companies, addInquiry } = useDemo();
   const [isModalOpen, setIsModalOpen] = useState(false);
   
-  // RFQ Form state
   const [buyerName, setBuyerName] = useState("");
   const [buyerEmail, setBuyerEmail] = useState("");
   const [country, setCountry] = useState("");
@@ -30,18 +29,17 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
   const [message, setMessage] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // Find product and company
   const product = products.find((p) => p.id === productId);
   const company = product ? companies.find((c) => c.id === product.companyId) : null;
 
   if (!product) {
     return (
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen bg-[#FAFAF5]">
         <Navbar />
-        <div className="flex-1 flex flex-col items-center justify-center space-y-4">
-          <HelpCircle className="w-16 h-16 text-forest-300" />
-          <h2 className="text-xl font-bold">Product Not Found</h2>
-          <Link href="/directory" className="px-6 py-2.5 rounded-xl bg-forest-600 text-white text-xs font-bold shadow-md">
+        <div className="flex-1 flex flex-col items-center justify-center space-y-4 font-sans">
+          <HelpCircle className="w-16 h-16 text-[#A8A29E]" />
+          <h2 className="text-xl font-bold font-serif text-[#1C1917]">Product Not Found</h2>
+          <Link href="/directory" className="btn-primary">
             Return to Directory
           </Link>
         </div>
@@ -67,7 +65,6 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
     setTimeout(() => {
       setIsSubmitted(false);
       setIsModalOpen(false);
-      // Reset form
       setBuyerName("");
       setBuyerEmail("");
       setCountry("");
@@ -77,14 +74,14 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
   };
 
   return (
-    <div className="bg-forest-50/10 dark:bg-forest-950/10 min-h-screen flex flex-col">
+    <div className="bg-[#FAFAF5] min-h-screen flex flex-col">
       <Navbar />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-1">
         {/* Back Link & Breadcrumbs */}
-        <div className="flex items-center justify-between mb-8 text-xs font-medium text-forest-700">
-          <Link href="/directory" className="inline-flex items-center gap-1.5 hover:text-gold-500 transition-colors">
-            <ArrowLeft className="w-4 h-4" />
+        <div className="flex items-center justify-between mb-8 text-xs font-medium text-[#57534E] font-sans">
+          <Link href="/directory" className="inline-flex items-center gap-1.5 hover:text-[#166534] transition-colors">
+            <ArrowLeft className="w-4 h-4 text-[#166534]" />
             <span>Back to Directory</span>
           </Link>
           <div className="flex items-center gap-1">
@@ -92,7 +89,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
             <span>/</span>
             <Link href="/directory" className="hover:underline">Directory</Link>
             <span>/</span>
-            <span className="text-forest-800 dark:text-forest-200 truncate max-w-[200px]">{product.name}</span>
+            <span className="text-[#1C1917] truncate max-w-[200px] font-semibold">{product.name}</span>
           </div>
         </div>
 
@@ -101,8 +98,8 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
           <div className="lg:col-span-2 space-y-8">
             
             {/* Main Details Card */}
-            <div className="bg-white dark:bg-forest-900/10 rounded-3xl border border-forest-100/20 dark:border-forest-900/20 overflow-hidden shadow-sm">
-              <div className="h-[400px] relative overflow-hidden bg-forest-100/30">
+            <div className="bg-white rounded-[12px] border border-[#E7E5E4] border-b-2 border-b-[#D6D3D1] overflow-hidden">
+              <div className="h-[400px] relative overflow-hidden bg-[#F5F5EB]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={product.imageUrl}
@@ -113,60 +110,60 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
 
               <div className="p-8 space-y-6">
                 <div>
-                  <span className="px-3 py-1 rounded-full bg-forest-100/50 dark:bg-forest-900 text-forest-700 dark:text-forest-300 text-[10px] font-extrabold uppercase tracking-wider inline-block mb-3">
+                  <span className="px-3 py-1 rounded-[4px] bg-[#F5F5EB] border border-[#D6D3D1] text-[#166534] text-[10px] font-extrabold uppercase tracking-wider inline-block mb-3 font-sans">
                     {product.category}
                   </span>
-                  <h1 className="text-2xl md:text-3xl font-extrabold text-forest-950 dark:text-white leading-tight">
+                  <h1 className="text-2xl md:text-3xl font-extrabold text-[#1C1917] leading-tight font-serif">
                     {product.name}
                   </h1>
                 </div>
 
-                <div className="border-t border-b border-forest-100/10 dark:border-forest-900/20 py-5 grid grid-cols-2 sm:grid-cols-3 gap-6">
+                <div className="border-t border-b border-[#E7E5E4] py-5 grid grid-cols-2 sm:grid-cols-3 gap-6 font-sans">
                   <div>
-                    <p className="text-[10px] font-bold text-forest-700 uppercase tracking-widest">Monthly Capacity</p>
-                    <p className="text-base font-bold text-forest-900 dark:text-white mt-1">
+                    <p className="text-[10px] font-bold text-[#A8A29E] uppercase tracking-widest">Monthly Capacity</p>
+                    <p className="text-base font-bold text-[#1C1917] mt-1">
                       {product.monthlyCapacity.toLocaleString()} {product.unit} / month
                     </p>
                   </div>
                   <div>
-                    <p className="text-[10px] font-bold text-forest-700 uppercase tracking-widest">Min Order Requirement</p>
-                    <p className="text-base font-bold text-forest-900 dark:text-white mt-1">
+                    <p className="text-[10px] font-bold text-[#A8A29E] uppercase tracking-widest">Min Order Requirement</p>
+                    <p className="text-base font-bold text-[#1C1917] mt-1">
                       Negotiable
                     </p>
                   </div>
                   <div>
-                    <p className="text-[10px] font-bold text-forest-700 uppercase tracking-widest">IncoTerm Options</p>
-                    <p className="text-base font-bold text-forest-900 dark:text-white mt-1">
+                    <p className="text-[10px] font-bold text-[#A8A29E] uppercase tracking-widest">IncoTerm Options</p>
+                    <p className="text-base font-bold text-[#1C1917] mt-1">
                       FOB / CIF
                     </p>
                   </div>
                 </div>
 
-                <div className="space-y-3">
-                  <h3 className="text-sm font-bold text-forest-950 dark:text-white">Product Description</h3>
-                  <p className="text-xs md:text-sm text-forest-800 dark:text-forest-200 leading-relaxed">
+                <div className="space-y-3 font-sans">
+                  <h3 className="text-sm font-bold text-[#1C1917] font-serif">Product Description</h3>
+                  <p className="text-xs md:text-sm text-[#57534E] leading-relaxed">
                     {product.description}
                   </p>
                 </div>
 
-                <div className="space-y-3">
-                  <h3 className="text-sm font-bold text-forest-950 dark:text-white">Product Specifications</h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-forest-50/20 dark:bg-forest-950/20 p-4 rounded-2xl border border-forest-100/10 dark:border-forest-900/10">
-                    <div className="flex justify-between py-1.5 border-b border-forest-100/10 dark:border-forest-900/10">
-                      <span className="text-forest-700 font-medium">Origin Location</span>
-                      <span className="font-bold text-forest-800 dark:text-forest-200">{company?.location.split(",")[0] || "West Java"}</span>
+                <div className="space-y-3 font-sans">
+                  <h3 className="text-sm font-bold text-[#1C1917] font-serif">Product Specifications</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-[#F5F5EB] p-4 rounded-[8px] border border-[#D6D3D1]">
+                    <div className="flex justify-between py-1.5 border-b border-[#D6D3D1]">
+                      <span className="text-[#57534E] font-medium">Origin Location</span>
+                      <span className="font-bold text-[#1C1917]">{company?.location.split(",")[0] || "West Java"}</span>
                     </div>
-                    <div className="flex justify-between py-1.5 border-b border-forest-100/10 dark:border-forest-900/10">
-                      <span className="text-forest-700 font-medium">Standard Grade</span>
-                      <span className="font-bold text-forest-800 dark:text-forest-200">Export Premium</span>
+                    <div className="flex justify-between py-1.5 border-b border-[#D6D3D1]">
+                      <span className="text-[#57534E] font-medium">Standard Grade</span>
+                      <span className="font-bold text-[#1C1917]">Export Premium</span>
                     </div>
-                    <div className="flex justify-between py-1.5 border-b border-forest-100/10 dark:border-forest-900/10">
-                      <span className="text-forest-700 font-medium">Packaging Unit</span>
-                      <span className="font-bold text-forest-800 dark:text-forest-200">Export Standard Bag / Box</span>
+                    <div className="flex justify-between py-1.5 border-b border-[#D6D3D1]">
+                      <span className="text-[#57534E] font-medium">Packaging Unit</span>
+                      <span className="font-bold text-[#1C1917]">Export Standard Bag / Box</span>
                     </div>
-                    <div className="flex justify-between py-1.5 border-b border-forest-100/10 dark:border-forest-900/10">
-                      <span className="text-forest-700 font-medium">Moisture / Spec</span>
-                      <span className="font-bold text-forest-800 dark:text-forest-200">SGS Quality Inspected</span>
+                    <div className="flex justify-between py-1.5 border-b border-[#D6D3D1]">
+                      <span className="text-[#57534E] font-medium">Moisture / Spec</span>
+                      <span className="font-bold text-[#1C1917]">SGS Quality Inspected</span>
                     </div>
                   </div>
                 </div>
@@ -174,24 +171,24 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
             </div>
 
             {/* Certifications and Compliance */}
-            <div className="p-8 bg-white dark:bg-forest-900/10 rounded-3xl border border-forest-100/20 dark:border-forest-900/20 shadow-sm space-y-6">
-              <h3 className="text-sm font-bold text-forest-950 dark:text-white uppercase tracking-wider flex items-center gap-2">
-                <FileText className="w-5 h-5 text-gold-500" />
+            <div className="p-8 bg-white rounded-[12px] border border-[#E7E5E4] border-b-2 border-b-[#D6D3D1] space-y-6">
+              <h3 className="text-sm font-bold text-[#1C1917] uppercase tracking-wider flex items-center gap-2 font-serif">
+                <FileText className="w-5 h-5 text-[#166534]" />
                 <span>Certifications & Compliance</span>
               </h3>
               
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 font-sans">
                 {product.certifications.map((cert) => (
                   <div
                     key={cert}
-                    className="p-4 rounded-2xl bg-forest-50/50 dark:bg-forest-900/50 border border-forest-100/30 dark:border-forest-900/30 flex items-center gap-3"
+                    className="p-4 rounded-[8px] bg-[#F5F5EB] border border-[#D6D3D1] flex items-center gap-3"
                   >
-                    <div className="p-1.5 rounded-lg bg-gold-400/10 text-gold-500">
+                    <div className="p-1.5 rounded-[4px] bg-[#166534]/10 text-[#166534]">
                       <Check className="w-4 h-4" />
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-forest-900 dark:text-white">{cert}</p>
-                      <p className="text-[10px] text-forest-700 font-semibold mt-0.5">Verified</p>
+                      <p className="text-xs font-bold text-[#1C1917]">{cert}</p>
+                      <p className="text-[10px] text-[#A8A29E] font-semibold mt-0.5">Verified</p>
                     </div>
                   </div>
                 ))}
@@ -202,45 +199,45 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
 
           {/* Supplier Info & RFQ Action Card (Right 1 col) */}
           <div className="space-y-8">
-            <div className="p-6 bg-white dark:bg-forest-900/10 rounded-3xl border border-forest-100/20 dark:border-forest-900/20 shadow-sm space-y-6 sticky top-28">
+            <div className="p-6 bg-white rounded-[12px] border border-[#E7E5E4] border-b-[3px] border-b-[#A8A29E] space-y-6 sticky top-28 font-sans">
               
               {/* Exporter Details */}
               <div className="space-y-4">
                 <div className="flex items-start justify-between">
                   <div>
-                    <p className="text-[10px] font-extrabold uppercase tracking-widest text-forest-700">Supplier</p>
-                    <h2 className="text-lg font-bold text-forest-950 dark:text-white mt-1">
+                    <p className="text-[10px] font-extrabold uppercase tracking-widest text-[#A8A29E]">Supplier</p>
+                    <h2 className="text-lg font-bold text-[#1C1917] mt-1 font-serif">
                       {product.companyName}
                     </h2>
                   </div>
-                  <div className="p-2 rounded-2xl bg-forest-100 dark:bg-forest-900 text-forest-700 dark:text-forest-300">
+                  <div className="p-2 rounded-[8px] bg-[#F5F5EB] text-[#166534]">
                     <CompanyLogo logo={company?.logo} />
                   </div>
                 </div>
 
                 {/* Verification tag */}
                 {company?.isVerified ? (
-                  <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-gold-400/10 border border-gold-400/30 text-[11px] font-extrabold text-gold-600 uppercase tracking-wider">
+                  <div className="flex items-center gap-2 px-3 py-2 rounded-[4px] bg-[#DCFCE7] border border-[#86EFAC] text-[11px] font-bold text-[#166534] uppercase tracking-wider">
                     <ShieldCheck className="w-4 h-4 fill-current" />
                     <span>Verified Export Partner</span>
                   </div>
                 ) : (
-                  <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-forest-50 border border-forest-100 text-[11px] font-semibold text-forest-800">
+                  <div className="flex items-center gap-2 px-3 py-2 rounded-[4px] bg-[#F5F5EB] border border-[#D6D3D1] text-[11px] font-semibold text-[#57534E]">
                     <span>Curating Documents...</span>
                   </div>
                 )}
 
-                <p className="text-xs text-forest-800 dark:text-forest-200 leading-relaxed">
+                <p className="text-xs text-[#57534E] leading-relaxed">
                   {company?.description}
                 </p>
 
-                <div className="space-y-3 pt-2 text-xs border-t border-forest-100/10 dark:border-forest-900/20">
-                  <div className="flex items-center gap-2.5 text-forest-800 dark:text-forest-200">
-                    <MapPin className="w-4 h-4 text-forest-700" />
+                <div className="space-y-3 pt-2 text-xs border-t border-[#E7E5E4]">
+                  <div className="flex items-center gap-2.5 text-[#57534E]">
+                    <MapPin className="w-4 h-4 text-[#166534]" />
                     <span>{company?.location || "Jawa Barat, Indonesia"}</span>
                   </div>
-                  <div className="flex items-center gap-2.5 text-forest-800 dark:text-forest-200">
-                    <Calendar className="w-4 h-4 text-forest-700" />
+                  <div className="flex items-center gap-2.5 text-[#57534E]">
+                    <Calendar className="w-4 h-4 text-[#166534]" />
                     <span>Established {company?.establishedYear}</span>
                   </div>
                 </div>
@@ -249,13 +246,13 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
               {/* RFQ Trigger Button */}
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="w-full py-4 rounded-xl bg-forest-600 hover:bg-forest-700 text-white font-extrabold text-xs tracking-wider uppercase transition-all shadow-md shadow-forest-900/10 hover:shadow-forest-950/20 flex items-center justify-center gap-2"
+                className="w-full btn-primary py-4 cursor-pointer"
               >
-                <Send className="w-4 h-4" />
+                <Send className="w-4 h-4 mr-2" />
                 <span>Request a Quote</span>
               </button>
 
-              <p className="text-[10px] text-center text-forest-700 leading-normal">
+              <p className="text-[10px] text-center text-[#57534E] leading-normal">
                 Sistem akan menyalurkan inquiries langsung kepada pimpinan koperasi dan mengirimkan notifikasi. UMKM akan merespons langsung via email Anda.
               </p>
             </div>
@@ -265,26 +262,26 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
 
       {/* RFQ Modal overlay */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-white dark:bg-forest-950 rounded-3xl border border-forest-100/20 dark:border-forest-900/30 w-full max-w-xl p-8 relative shadow-2xl animate-in zoom-in-95 duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1C1917]/40 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-[12px] border border-[#D6D3D1] border-b-[3px] border-b-[#A8A29E] w-full max-w-xl p-8 relative animate-in zoom-in-95 duration-200">
             
             {/* Close */}
             <button
               onClick={() => setIsModalOpen(false)}
-              className="absolute top-6 right-6 p-1.5 rounded-full hover:bg-forest-50 dark:hover:bg-forest-900 text-forest-400 hover:text-forest-950 dark:hover:text-white"
+              className="absolute top-6 right-6 p-1.5 rounded-[4px] hover:bg-[#F5F5EB] text-[#57534E] hover:text-[#1C1917] cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4 rotate-90" />
             </button>
 
             {isSubmitted ? (
               // Success Screen
-              <div className="py-12 text-center space-y-4 animate-in fade-in zoom-in-95">
-                <CheckCircle className="w-16 h-16 text-forest-500 mx-auto" />
-                <h3 className="text-xl font-bold text-forest-950 dark:text-white">Quote Request Submitted</h3>
-                <p className="text-xs text-forest-800 max-w-sm mx-auto">
+              <div className="py-12 text-center space-y-4 animate-in fade-in zoom-in-95 font-sans">
+                <CheckCircle className="w-16 h-16 text-[#166534] mx-auto" />
+                <h3 className="text-xl font-bold text-[#1C1917] font-serif">Quote Request Submitted</h3>
+                <p className="text-xs text-[#57534E] max-w-sm mx-auto">
                   RFQ telah berhasil dikirimkan ke database lokal. Notifikasi email simulasi telah dikirimkan ke pemilik produk.
                 </p>
-                <div className="inline-flex items-center gap-1 text-[10px] font-bold text-gold-500 uppercase tracking-widest bg-gold-500/5 px-3 py-1 rounded-full animate-pulse">
+                <div className="inline-flex items-center gap-1 text-[10px] font-bold text-[#A47148] uppercase tracking-widest bg-[#F5F5EB] px-3 py-1 rounded-[4px] border border-[#D6D3D1] animate-pulse">
                   <span>Routing to Partner Inbox...</span>
                 </div>
               </div>
@@ -292,14 +289,14 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
               // Form screen
               <form onSubmit={handleRfqSubmit} className="space-y-6">
                 <div>
-                  <span className="text-[10px] font-bold text-gold-500 uppercase tracking-widest block mb-1">
+                  <span className="text-[10px] font-bold text-[#A47148] uppercase tracking-widest block mb-1 font-sans">
                     Send RFQ
                   </span>
-                  <h3 className="text-lg font-bold text-forest-950 dark:text-white leading-tight">
+                  <h3 className="text-lg font-bold text-[#1C1917] leading-tight font-serif">
                     Inquire: {product.name}
                   </h3>
-                  <p className="text-xs text-forest-700 mt-1">
-                    Supplier: <span className="font-semibold text-forest-900">{product.companyName}</span>
+                  <p className="text-xs text-[#57534E] mt-1 font-sans">
+                    Supplier: <span className="font-semibold text-[#1C1917]">{product.companyName}</span>
                   </p>
                 </div>
 
@@ -307,25 +304,25 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                   {/* Row 1 */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-forest-700 uppercase tracking-wider">Your Name</label>
+                      <label className="input-label">Your Name</label>
                       <input
                         type="text"
                         required
                         placeholder="e.g. John Doe"
                         value={buyerName}
                         onChange={(e) => setBuyerName(e.target.value)}
-                        className="w-full text-xs p-3 bg-forest-50/50 dark:bg-forest-900 border border-forest-100 dark:border-forest-900 rounded-xl outline-none focus:border-forest-500"
+                        className="input-text"
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-forest-700 uppercase tracking-wider">Your Email</label>
+                      <label className="input-label">Your Email</label>
                       <input
                         type="email"
                         required
                         placeholder="john@company.com"
                         value={buyerEmail}
                         onChange={(e) => setBuyerEmail(e.target.value)}
-                        className="w-full text-xs p-3 bg-forest-50/50 dark:bg-forest-900 border border-forest-100 dark:border-forest-900 rounded-xl outline-none focus:border-forest-500"
+                        className="input-text"
                       />
                     </div>
                   </div>
@@ -333,18 +330,18 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                   {/* Row 2 */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-forest-700 uppercase tracking-wider">Destination Country</label>
+                      <label className="input-label">Destination Country</label>
                       <input
                         type="text"
                         required
                         placeholder="e.g. Germany"
                         value={country}
                         onChange={(e) => setCountry(e.target.value)}
-                        className="w-full text-xs p-3 bg-forest-50/50 dark:bg-forest-900 border border-forest-100 dark:border-forest-900 rounded-xl outline-none focus:border-forest-500"
+                        className="input-text"
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-forest-700 uppercase tracking-wider">Quantity Needed ({product.unit})</label>
+                      <label className="input-label">Quantity Needed ({product.unit})</label>
                       <input
                         type="number"
                         required
@@ -352,27 +349,27 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                         placeholder="Volume requirement"
                         value={quantity}
                         onChange={(e) => setQuantity(e.target.value)}
-                        className="w-full text-xs p-3 bg-forest-50/50 dark:bg-forest-900 border border-forest-100 dark:border-forest-900 rounded-xl outline-none focus:border-forest-500"
+                        className="input-text"
                       />
                     </div>
                   </div>
 
                   {/* Message */}
                   <div className="space-y-1">
-                    <label className="text-[10px] font-bold text-forest-700 uppercase tracking-wider">Negotiation / Details Message</label>
+                    <label className="input-label">Negotiation / Details Message</label>
                     <textarea
                       rows={4}
                       placeholder="Discuss target price, shipping terms, sample requirements..."
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
-                      className="w-full text-xs p-3 bg-forest-50/50 dark:bg-forest-900 border border-forest-100 dark:border-forest-900 rounded-xl outline-none focus:border-forest-500"
+                      className="input-text h-auto py-3"
                     ></textarea>
                   </div>
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full py-3.5 rounded-xl bg-forest-600 hover:bg-forest-700 text-white font-extrabold text-xs tracking-wider uppercase transition-all shadow-md"
+                  className="btn-primary w-full py-3.5 cursor-pointer font-extrabold uppercase tracking-wider"
                 >
                   Send Inquiry Request
                 </button>

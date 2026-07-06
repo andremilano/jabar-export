@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useDemo } from "@/context/DemoContext";
-import { Building, ShieldCheck, FileText, Check, Upload, HelpCircle, Save } from "lucide-react";
+import { Building, ShieldCheck, FileText, Check, Upload, Save } from "lucide-react";
 
 export default function DashboardProfile() {
   const { companies, updateCompanyVerification } = useDemo();
@@ -30,7 +30,6 @@ export default function DashboardProfile() {
 
   const handleSaveProfile = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate updating context
     myCompany.name = name;
     myCompany.establishedYear = Number(establishedYear);
     myCompany.location = location;
@@ -38,7 +37,6 @@ export default function DashboardProfile() {
     myCompany.npwp = npwp;
     myCompany.description = description;
 
-    // Persist to localStorage
     const storedCompanies = localStorage.getItem("jebar_companies");
     if (storedCompanies) {
       const parsed = JSON.parse(storedCompanies);
@@ -68,103 +66,102 @@ export default function DashboardProfile() {
     updated[index].filename = `doc_proof_${updated[index].name.toLowerCase().replace(/\s+/g, "_")}.pdf`;
     setCerts(updated);
     
-    // For demo, if SME uploads legal document, we can reset verification to false so Admin can verify it
     if (myCompany.isVerified) {
       updateCompanyVerification(myCompany.id, false);
     }
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-300">
+    <div className="space-y-8 animate-in fade-in duration-300 font-sans">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-forest-950 dark:text-white">Profile &amp; Capacity</h1>
-        <p className="text-xs text-forest-700 mt-1">Manage company details, verification NIB/NPWP, and uploads.</p>
+        <h1 className="text-2xl font-bold tracking-tight text-[#1C1917] font-serif">Profile &amp; Capacity</h1>
+        <p className="text-xs text-[#57534E] mt-1">Manage company details, verification NIB/NPWP, and uploads.</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column: Form Details (2 cols) */}
         <div className="lg:col-span-2 space-y-6">
-          <form onSubmit={handleSaveProfile} className="p-6 bg-white dark:bg-forest-900/10 rounded-2xl border border-forest-100/20 dark:border-forest-900/20 shadow-sm space-y-6">
-            <h3 className="text-sm font-bold text-forest-950 dark:text-white uppercase tracking-wider flex items-center gap-2">
-              <Building className="w-5 h-5 text-forest-600 dark:text-forest-700" />
+          <form onSubmit={handleSaveProfile} className="p-6 bg-white rounded-[12px] border border-[#E7E5E4] border-b-2 border-b-[#D6D3D1] space-y-6">
+            <h3 className="text-sm font-bold text-[#1C1917] uppercase tracking-wider flex items-center gap-2 font-serif">
+              <Building className="w-5 h-5 text-[#166534]" />
               <span>Company Legal Identity</span>
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1">
-                <label className="text-[10px] font-bold text-forest-700 uppercase tracking-wider">Company Name</label>
+                <label className="input-label">Company Name</label>
                 <input
                   type="text"
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full text-xs p-3 bg-forest-50/50 dark:bg-forest-900 border border-forest-100 dark:border-forest-900 rounded-xl outline-none focus:border-forest-500"
+                  className="input-text"
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-[10px] font-bold text-forest-700 uppercase tracking-wider">Established Year</label>
+                <label className="input-label">Established Year</label>
                 <input
                   type="number"
                   required
                   value={establishedYear}
                   onChange={(e) => setEstablishedYear(e.target.value)}
-                  className="w-full text-xs p-3 bg-forest-50/50 dark:bg-forest-900 border border-forest-100 dark:border-forest-900 rounded-xl outline-none focus:border-forest-500"
+                  className="input-text"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1">
-                <label className="text-[10px] font-bold text-forest-700 uppercase tracking-wider">NIB (Nomor Induk Berusaha)</label>
+                <label className="input-label">NIB (Nomor Induk Berusaha)</label>
                 <input
                   type="text"
                   required
                   value={nib}
                   onChange={(e) => setNib(e.target.value)}
-                  className="w-full text-xs p-3 bg-forest-50/50 dark:bg-forest-900 border border-forest-100 dark:border-forest-900 rounded-xl outline-none focus:border-forest-500 font-mono"
+                  className="input-text font-mono"
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-[10px] font-bold text-forest-700 uppercase tracking-wider">NPWP Perusahaan</label>
+                <label className="input-label">NPWP Perusahaan</label>
                 <input
                   type="text"
                   required
                   value={npwp}
                   onChange={(e) => setNpwp(e.target.value)}
-                  className="w-full text-xs p-3 bg-forest-50/50 dark:bg-forest-900 border border-forest-100 dark:border-forest-900 rounded-xl outline-none focus:border-forest-500 font-mono"
+                  className="input-text font-mono"
                 />
               </div>
             </div>
 
             <div className="space-y-1">
-              <label className="text-[10px] font-bold text-forest-700 uppercase tracking-wider">Operational Location</label>
+              <label className="input-label">Operational Location</label>
               <input
                 type="text"
                 required
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                className="w-full text-xs p-3 bg-forest-50/50 dark:bg-forest-900 border border-forest-100 dark:border-forest-900 rounded-xl outline-none focus:border-forest-500"
+                className="input-text"
               />
             </div>
 
             <div className="space-y-1">
-              <label className="text-[10px] font-bold text-forest-700 uppercase tracking-wider">Company Description</label>
+              <label className="input-label">Company Description</label>
               <textarea
                 rows={4}
                 required
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="w-full text-xs p-3 bg-forest-50/50 dark:bg-forest-900 border border-forest-100 dark:border-forest-900 rounded-xl outline-none focus:border-forest-500"
+                className="input-text h-auto py-3"
               ></textarea>
             </div>
 
-            <div className="flex justify-between items-center pt-4 border-t border-forest-100/10 dark:border-forest-900/20">
-              <span className="text-[10px] text-forest-700">
+            <div className="flex justify-between items-center pt-4 border-t border-[#E7E5E4]">
+              <span className="text-[10px] text-[#A8A29E]">
                 Pembaruan profil segera diterapkan pada tayangan publik produk Anda.
               </span>
               <button
                 type="submit"
-                className="flex items-center gap-1.5 px-5 py-3 rounded-xl bg-forest-600 hover:bg-forest-700 text-white text-xs font-bold transition-all shadow-md"
+                className="btn-primary flex items-center gap-1.5 px-5 py-3 cursor-pointer"
               >
                 {isSaved ? (
                   <>
@@ -173,7 +170,7 @@ export default function DashboardProfile() {
                   </>
                 ) : (
                   <>
-                    <Save className="w-4 h-4" />
+                    <Save className="w-4 h-4 mr-1 text-white" />
                     <span>Save Company Profile</span>
                   </>
                 )}
@@ -185,28 +182,28 @@ export default function DashboardProfile() {
         {/* Right Column: Verification Status & Certifications uploads (1 col) */}
         <div className="space-y-6">
           {/* Trust Panel */}
-          <div className="p-6 bg-white dark:bg-forest-900/10 rounded-2xl border border-forest-100/20 dark:border-forest-900/20 shadow-sm space-y-4">
-            <h3 className="text-sm font-bold text-forest-950 dark:text-white uppercase tracking-wider">
+          <div className="p-6 bg-white rounded-[12px] border border-[#E7E5E4] border-b-[3px] border-b-[#A8A29E] space-y-4">
+            <h3 className="text-sm font-bold text-[#1C1917] uppercase tracking-wider font-serif">
               Verification Badge
             </h3>
 
             {myCompany.isVerified ? (
-              <div className="p-4 rounded-xl bg-gold-400/10 border border-gold-400/30 space-y-3">
-                <div className="flex items-center gap-2 text-gold-600">
-                  <ShieldCheck className="w-5 h-5 fill-current" />
+              <div className="p-4 rounded-[8px] bg-[#DCFCE7] border border-[#86EFAC] space-y-3 text-[#166534]">
+                <div className="flex items-center gap-2">
+                  <ShieldCheck className="w-5 h-5 fill-current text-[#166534]" />
                   <span className="text-xs font-extrabold uppercase tracking-wide">VERIFIED EXPORTER</span>
                 </div>
-                <p className="text-[10px] text-gold-900 dark:text-gold-300 leading-relaxed">
+                <p className="text-[10px] leading-relaxed text-[#166534]">
                   Profil legalitas NIB dan NPWP koperasi Anda telah diaudit dan disetujui secara resmi oleh Disperindag Provinsi Jawa Barat. Badge hijau-emas tersemat pada listing publik Anda.
                 </p>
               </div>
             ) : (
-              <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 space-y-3">
-                <div className="flex items-center gap-2 text-amber-600">
-                  <FileText className="w-5 h-5" />
+              <div className="p-4 rounded-[8px] bg-[#FEF9C3] border border-[#CA8A04] space-y-3 text-[#CA8A04]">
+                <div className="flex items-center gap-2">
+                  <FileText className="w-5 h-5 text-[#CA8A04]" />
                   <span className="text-xs font-extrabold uppercase tracking-wide">UNDER AUDIT</span>
                 </div>
-                <p className="text-[10px] text-amber-900 dark:text-amber-400/90 leading-relaxed">
+                <p className="text-[10px] leading-relaxed text-[#CA8A04]">
                   Dokumen legalitas Anda sedang mengantre verifikasi. Anda dapat meninjau/menyetujui pengajuan ini secara manual dengan beralih peran ke **Super Admin** di dashboard ini.
                 </p>
               </div>
@@ -214,8 +211,8 @@ export default function DashboardProfile() {
           </div>
 
           {/* Certifications uploads */}
-          <div className="p-6 bg-white dark:bg-forest-900/10 rounded-2xl border border-forest-100/20 dark:border-forest-900/20 shadow-sm space-y-4">
-            <h3 className="text-sm font-bold text-forest-950 dark:text-white uppercase tracking-wider">
+          <div className="p-6 bg-white rounded-[12px] border border-[#E7E5E4] border-b-[3px] border-b-[#A8A29E] space-y-4">
+            <h3 className="text-sm font-bold text-[#1C1917] uppercase tracking-wider font-serif">
               Verify Certifications
             </h3>
             
@@ -223,30 +220,30 @@ export default function DashboardProfile() {
               {certs.map((c, i) => (
                 <div
                   key={c.name}
-                  className="p-3.5 rounded-xl border border-forest-100/10 dark:border-forest-900/20 space-y-2 text-xs"
+                  className="p-3.5 rounded-[8px] border border-[#E7E5E4] space-y-2 text-xs font-sans"
                 >
                   <div className="flex justify-between items-center">
-                    <span className="font-bold text-forest-900 dark:text-white">{c.name}</span>
+                    <span className="font-bold text-[#1C1917]">{c.name}</span>
                     {c.uploaded ? (
-                      <span className="px-2 py-0.5 rounded bg-forest-600/10 text-forest-600 text-[9px] font-semibold flex items-center gap-1">
-                        <Check className="w-3 h-3" />
+                      <span className="px-2 py-0.5 rounded-[4px] bg-[#DCFCE7] text-[#166534] border border-[#86EFAC] text-[9px] font-semibold flex items-center gap-1">
+                        <Check className="w-3 h-3 text-[#166534]" />
                         <span>Uploaded</span>
                       </span>
                     ) : (
-                      <span className="px-2 py-0.5 rounded bg-red-500/10 text-red-500 text-[9px] font-semibold">
+                      <span className="px-2 py-0.5 rounded-[4px] bg-[#FEE2E2] text-[#B91C1C] border border-[#FCA5A5] text-[9px] font-semibold">
                         Missing
                       </span>
                     )}
                   </div>
 
                   {c.uploaded ? (
-                    <p className="text-[10px] font-mono text-forest-700 truncate max-w-full">
+                    <p className="text-[10px] font-mono text-[#57534E] truncate max-w-full">
                       {c.filename}
                     </p>
                   ) : (
                     <button
                       onClick={() => handleUploadSimulate(i)}
-                      className="w-full flex items-center justify-center gap-1.5 py-1.5 rounded bg-forest-50 hover:bg-forest-100 text-forest-600 text-[10px] font-bold border border-dashed border-forest-200/50"
+                      className="w-full flex items-center justify-center gap-1.5 py-1.5 rounded-[8px] bg-[#F5F5EB] hover:bg-[#E7E5E4] text-[#166534] text-[10px] font-bold border border-dashed border-[#D6D3D1] cursor-pointer"
                     >
                       <Upload className="w-3.5 h-3.5" />
                       <span>Simulate Upload Proof (PDF)</span>

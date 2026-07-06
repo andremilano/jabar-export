@@ -14,35 +14,35 @@ export default function DashboardLayout({
 
   if (role === "buyer") {
     return (
-      <div className="min-h-screen bg-forest-950 text-white flex items-center justify-center p-4">
-        <div className="max-w-md w-full p-8 rounded-3xl glass border border-forest-900/50 space-y-6 text-center shadow-2xl">
-          <ShieldAlert className="w-12 h-12 text-gold-400 mx-auto animate-bounce" />
+      <div className="min-h-screen bg-[#1C1917] flex items-center justify-center p-4">
+        <div className="max-w-md w-full p-8 rounded-[12px] bg-white border border-[#D6D3D1] border-b-[3px] border-b-[#A8A29E] space-y-6 text-center shadow-none font-sans">
+          <ShieldAlert className="w-12 h-12 text-[#A47148] mx-auto animate-pulse" />
           <div className="space-y-2">
-            <h2 className="text-xl font-bold">Partner Portal Access</h2>
-            <p className="text-xs text-forest-700 leading-relaxed">
+            <h2 className="text-xl font-bold font-serif text-[#1C1917]">Partner Portal Access</h2>
+            <p className="text-xs text-[#57534E] leading-relaxed">
               Selamat datang di portal B2B. Anda sedang berada dalam mode Buyer (Publik). Untuk mengakses dashboard manajemen, silakan pilih profil simulasi di bawah ini:
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-3 pt-2">
+          <div className="grid grid-cols-1 gap-3 pt-2 font-sans">
             <button
               onClick={() => setRole("sme")}
-              className="flex items-center justify-center gap-2 p-3.5 rounded-xl bg-forest-600 hover:bg-forest-500 text-white text-xs font-bold transition-all shadow-md"
+              className="w-full flex items-center justify-center gap-2 p-3.5 rounded-[8px] bg-[#166534] hover:bg-[#14532D] text-white text-xs font-bold transition-all shadow-none cursor-pointer border-none"
             >
-              <Briefcase className="w-4.5 h-4.5 text-gold-400" />
+              <Briefcase className="w-4.5 h-4.5 text-[#86A873]" />
               <span>Masuk Sebagai Mitra UMKM (SME)</span>
             </button>
             <button
               onClick={() => setRole("admin")}
-              className="flex items-center justify-center gap-2 p-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-white text-xs font-bold transition-all shadow-md"
+              className="w-full flex items-center justify-center gap-2 p-3.5 rounded-[8px] bg-[#A47148] hover:bg-[#8B5E3C] text-white text-xs font-bold transition-all shadow-none cursor-pointer border-none"
             >
-              <UserCheck className="w-4.5 h-4.5 text-amber-950" />
+              <UserCheck className="w-4.5 h-4.5 text-[#FAFAF5]" />
               <span>Masuk Sebagai Admin Dinas (Kurator)</span>
             </button>
           </div>
           
-          <div className="border-t border-forest-900/50 pt-4">
-            <a href="/" className="text-xs text-gold-400 font-semibold hover:underline">
+          <div className="border-t border-[#E7E5E4] pt-4 font-sans">
+            <a href="/" className="text-xs text-[#166534] font-semibold hover:underline">
               Kembali ke Directory Publik
             </a>
           </div>
@@ -52,28 +52,28 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen flex bg-forest-50/20 dark:bg-forest-950/10">
+    <div className="min-h-screen flex bg-[#FAFAF5]">
       {/* Sidebar */}
       <DashboardSidebar />
 
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col min-h-screen overflow-y-auto">
         {/* Top bar */}
-        <header className="h-20 border-b border-forest-100/10 dark:border-forest-900/20 px-8 flex items-center justify-between glass shrink-0">
+        <header className="h-20 border-b border-[#D6D3D1] px-8 flex items-center justify-between bg-white shrink-0 font-sans shadow-none">
           <div>
-            <h2 className="text-sm font-bold text-forest-950 dark:text-white">
+            <h2 className="text-sm font-bold text-[#1C1917] font-serif">
               {role === "admin" ? "Disperindag Admin Console" : "SME Export Dashboard"}
             </h2>
           </div>
           
           <div className="flex items-center gap-3">
-            <span className="text-[11px] font-semibold text-forest-700">
+            <span className="text-[11px] font-semibold text-[#57534E]">
               Simulated Session:
             </span>
-            <span className={`px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wide border ${
+            <span className={`px-2.5 py-1 rounded-[4px] text-[10px] font-extrabold uppercase tracking-wide border ${
               role === "admin"
-                ? "bg-amber-500/10 text-amber-600 border-amber-500/20"
-                : "bg-forest-600/10 text-forest-600 border-forest-600/20"
+                ? "bg-amber-50 text-amber-700 border-amber-300"
+                : "bg-forest-100 text-[#166534] border-forest-300"
             }`}>
               {role === "admin" ? "Super Admin" : "Priangan Coffee"}
             </span>
