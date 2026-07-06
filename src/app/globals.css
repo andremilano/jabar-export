@@ -1,26 +1,111 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap");
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --font-sans: "Plus Jakarta Sans", var(--font-geist-sans), sans-serif;
+  
+  /* Forest scale: Light Sage → Deep Forest Green (bottom row) */
+  --color-forest-50: #eef2eb;
+  --color-forest-100: #dde7d5;
+  --color-forest-200: #c8d4b8;
+  --color-forest-300: #a8b896;
+  --color-forest-400: #879c74;
+  --color-forest-500: #7d8c68;
+  --color-forest-600: #637054;
+  --color-forest-700: #4a5a3a;
+  --color-forest-800: #374430;
+  --color-forest-900: #2e3d28;
+  --color-forest-950: #1d2718;
+
+  /* Gold scale: Dark Chocolate → Warm Linen (top row) */
+  --color-gold-50: #f5ede0;
+  --color-gold-100: #e8d5b5;
+  --color-gold-200: #d4c9a8;
+  --color-gold-300: #c4a882;
+  --color-gold-400: #b08a5e;
+  --color-gold-500: #9b6b3a;
+  --color-gold-600: #8b4a1a;
+  --color-gold-700: #7a3e14;
+  --color-gold-800: #6b2e0e;
+  --color-gold-900: #5c2a0e;
+  --color-gold-950: #3a1608;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+:root {
+  --background: #f5ede0;
+  --foreground: #2e3d28;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #1d2718;
+    --foreground: #eef2eb;
   }
 }
 
+.dark {
+  --background: #1d2718;
+  --foreground: #eef2eb;
+}
+
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* Glassmorphism Classes */
+.glass {
+  background: rgba(245, 237, 224, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(196, 168, 130, 0.25);
+}
+
+.dark .glass {
+  background: rgba(29, 39, 24, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(100, 130, 80, 0.12);
+}
+
+/* Subtle grid background */
+.bg-grid-pattern {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+}
+
+.dark .bg-grid-pattern {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+}
+
+/* Shimmer animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Gold shine text hover */
+.text-shine-hover:hover {
+  background: linear-gradient(to right, #c4a882, #8b4a1a, #c4a882);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
