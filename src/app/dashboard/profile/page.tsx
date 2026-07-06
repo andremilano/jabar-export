@@ -198,12 +198,12 @@ export default function DashboardProfile() {
                 </p>
               </div>
             ) : (
-              <div className="p-4 rounded-[8px] bg-[#FEF9C3] border border-[#CA8A04] space-y-3 text-[#CA8A04]">
+              <div className="p-4 rounded-[8px] bg-[#FEF9C3] border border-warning space-y-3 text-warning">
                 <div className="flex items-center gap-2">
-                  <FileText className="w-5 h-5 text-[#CA8A04]" />
+                  <FileText className="w-5 h-5 text-warning" />
                   <span className="text-xs font-extrabold uppercase tracking-wide">UNDER AUDIT</span>
                 </div>
-                <p className="text-[10px] leading-relaxed text-[#CA8A04]">
+                <p className="text-[10px] leading-relaxed text-warning">
                   Dokumen legalitas Anda sedang mengantre verifikasi. Anda dapat meninjau/menyetujui pengajuan ini secara manual dengan beralih peran ke **Super Admin** di dashboard ini.
                 </p>
               </div>
@@ -230,7 +230,7 @@ export default function DashboardProfile() {
                         <span>Uploaded</span>
                       </span>
                     ) : (
-                      <span className="px-2 py-0.5 rounded-[4px] bg-[#FEE2E2] text-[#B91C1C] border border-[#FCA5A5] text-[9px] font-semibold">
+                      <span className="px-2 py-0.5 rounded-[4px] bg-[#FEE2E2] text-error border border-[#FCA5A5] text-[9px] font-semibold">
                         Missing
                       </span>
                     )}

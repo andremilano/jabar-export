@@ -57,7 +57,7 @@ export default function DashboardOverview() {
               <p className="text-[10px] font-bold text-[#A8A29E] uppercase tracking-widest">Pending Approvals</p>
               <h3 className="text-2xl font-bold text-[#1C1917] mt-1">{pendingCurationCount}</h3>
             </div>
-            <div className="p-3.5 rounded-[8px] bg-[#FEF9C3] text-[#CA8A04]">
+            <div className="p-3.5 rounded-[8px] bg-[#FEF9C3] text-warning">
               <FileText className="w-6 h-6" />
             </div>
           </div>
@@ -155,10 +155,10 @@ export default function DashboardOverview() {
 
       {/* Verification Warning banner */}
       {!myCompany.isVerified && (
-        <div className="p-4 rounded-[8px] bg-[#FEF9C3] border border-[#CA8A04] flex items-start gap-3">
-          <FileText className="w-5 h-5 text-[#CA8A04] shrink-0 mt-0.5" />
+        <div className="p-4 rounded-[8px] bg-[#FEF9C3] border border-warning flex items-start gap-3">
+          <FileText className="w-5 h-5 text-warning shrink-0 mt-0.5" />
           <div>
-            <p className="text-xs font-bold text-[#CA8A04]">Verification Pending Approval</p>
+            <p className="text-xs font-bold text-warning">Verification Pending Approval</p>
             <p className="text-[11px] text-[#A47148] mt-1 leading-normal">
               Profil legalitas perusahaan Anda masih dalam proses peninjauan kurasi Admin. Untuk demo ini, Anda dapat beralih peran menjadi Admin dan menyetujui dokumen legalitas Anda sendiri di menu **&quot;Curation &amp; Approvals&quot;**!
             </p>

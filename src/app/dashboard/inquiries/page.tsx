@@ -39,7 +39,7 @@ export default function DashboardInquiries() {
                   onClick={() => setSelectedInquiryId(inq.id)}
                   className={`w-full text-left p-4 rounded-[12px] border transition-all duration-200 flex items-start justify-between gap-3 text-xs cursor-pointer shadow-none ${
                     isActive
-                      ? "bg-[#166534] border-[#166534] text-white border-l-[4px] border-l-[#A47148]"
+                      ? "bg-[#166534] border-[#166534] text-white border-l-4 border-l-[#A47148]"
                       : "bg-white border border-[#E7E5E4] border-b-2 border-b-[#D6D3D1] text-[#57534E] hover:border-[#A8A29E]"
                   }`}
                 >
@@ -84,7 +84,7 @@ export default function DashboardInquiries() {
                     </p>
                   </div>
 
-                  <span className="px-3 py-1 rounded-[4px] bg-[#F5F5EB] border border-[#D6D3D1] text-[#166534] text-xs font-bold border-forest-500/20 font-sans">
+                  <span className="px-3 py-1 rounded-[4px] bg-[#F5F5EB] border border-[#D6D3D1] text-[#166534] text-xs font-bold font-sans">
                     Volume: {selectedInquiry.quantity.toLocaleString()} units
                   </span>
                 </div>
@@ -136,8 +136,8 @@ export default function DashboardInquiries() {
                       <span className="font-bold ml-1.5">Received</span>
                     </div>
                     <span className="flex-1 border-t border-dashed border-[#D6D3D1] mx-4"></span>
-                    <div className="flex items-center text-[#CA8A04] font-bold">
-                      <span className="animate-pulse relative inline-flex rounded-full h-2 w-2 bg-[#CA8A04] mr-1.5"></span>
+                    <div className="flex items-center text-warning font-bold">
+                      <span className="animate-pulse relative inline-flex rounded-full h-2 w-2 bg-warning mr-1.5"></span>
                       <span>Negotiating</span>
                     </div>
                   </div>
@@ -161,7 +161,7 @@ export default function DashboardInquiries() {
                   </button>
                   <button
                     onClick={() => alert("Inquiry declined.")}
-                    className="btn-destructive rounded-[8px] border-none bg-[#B91C1C] hover:bg-[#991B1B] text-white py-3.5 px-5 text-xs font-bold cursor-pointer transition-all flex items-center gap-1.5"
+                    className="btn-destructive rounded-[8px] border-none bg-error hover:bg-[#991B1B] text-white py-3.5 px-5 text-xs font-bold cursor-pointer transition-all flex items-center gap-1.5"
                   >
                     <X className="w-4 h-4 text-white" />
                     <span>Ignore</span>

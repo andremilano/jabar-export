@@ -87,8 +87,8 @@ export default function AdminCuration() {
                   <span>Verified Partner status active</span>
                 </div>
               ) : (
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[4px] bg-[#FEF9C3] border border-[#CA8A04] text-[10px] font-extrabold text-[#CA8A04] uppercase tracking-wide font-sans">
-                  <ShieldAlert className="w-3.5 h-3.5 text-[#CA8A04]" />
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[4px] bg-[#FEF9C3] border border-warning text-[10px] font-extrabold text-warning uppercase tracking-wide font-sans">
+                  <ShieldAlert className="w-3.5 h-3.5 text-warning" />
                   <span>Audit Document Pending</span>
                 </div>
               )}

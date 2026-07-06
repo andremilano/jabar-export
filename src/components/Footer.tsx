@@ -91,15 +91,15 @@ export default function Footer() {
             </h3>
             <ul className="space-y-3 text-xs text-[#A8A29E]">
               <li className="flex items-start gap-2.5">
-                <MapPin className="w-4 h-4 text-[#86A873] flex-shrink-0 mt-0.5" />
+                <MapPin className="w-4 h-4 text-[#86A873] shrink-0 mt-0.5" />
                 <span>Dinas Perindustrian dan Perdagangan Provinsi Jawa Barat, Jl. Asia Afrika No.1, Bandung, Indonesia</span>
               </li>
               <li className="flex items-center gap-2.5">
-                <Mail className="w-4 h-4 text-[#86A873] flex-shrink-0" />
+                <Mail className="w-4 h-4 text-[#86A873] shrink-0" />
                 <span>support@jabarexporthub.go.id</span>
               </li>
               <li className="flex items-center gap-2.5">
-                <Phone className="w-4 h-4 text-[#86A873] flex-shrink-0" />
+                <Phone className="w-4 h-4 text-[#86A873] shrink-0" />
                 <span>+62-22-423-4567</span>
               </li>
             </ul>

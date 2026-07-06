@@ -235,7 +235,7 @@ function DirectoryContent() {
           </aside>
 
           {/* Catalog Listing */}
-          <main className="flex-grow">
+          <main className="grow">
             {/* Active Filters list info header */}
             <div className="flex flex-wrap items-center justify-between gap-4 mb-6 font-sans">
               <p className="text-xs text-[#57534E] font-medium">
@@ -245,7 +245,7 @@ function DirectoryContent() {
               <div className="flex flex-wrap gap-2 items-center">
                 <ListFilter className="w-4 h-4 text-[#A8A29E]" />
                 {selectedCategory && (
-                  <span className="chip-filter selected text-xs !py-1 !px-2.5 cursor-default">
+                  <span className="chip-filter selected text-xs py-1! px-2.5! cursor-default">
                     {selectedCategory}
                     <button onClick={() => setSelectedCategory("")} className="ml-1 text-white hover:text-red-200 cursor-pointer">
                       <X className="w-3 h-3" />
@@ -253,7 +253,7 @@ function DirectoryContent() {
                   </span>
                 )}
                 {minCapacity > 0 && (
-                  <span className="chip-filter selected text-xs !py-1 !px-2.5 cursor-default">
+                  <span className="chip-filter selected text-xs py-1! px-2.5! cursor-default">
                     Min {minCapacity.toLocaleString()}/mo
                     <button onClick={() => setMinCapacity(0)} className="ml-1 text-white hover:text-red-200 cursor-pointer">
                       <X className="w-3.5 h-3.5" />
@@ -261,7 +261,7 @@ function DirectoryContent() {
                   </span>
                 )}
                 {onlyVerified && (
-                  <span className="chip-filter selected text-xs !py-1 !px-2.5 cursor-default">
+                  <span className="chip-filter selected text-xs py-1! px-2.5! cursor-default">
                     Verified Exporter
                     <button onClick={() => setOnlyVerified(false)} className="ml-1 text-white hover:text-red-200 cursor-pointer">
                       <X className="w-3.5 h-3.5" />
