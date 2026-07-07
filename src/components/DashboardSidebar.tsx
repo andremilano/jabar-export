@@ -13,10 +13,11 @@ import {
   ArrowLeft,
   Briefcase,
   ShieldAlert,
+  User,
 } from "lucide-react";
 
 export default function DashboardSidebar() {
-  const { role, setRole } = useDemo();
+  const { role, setRole, currentUser, logout } = useDemo();
   const pathname = usePathname();
   const router = useRouter();
 
@@ -57,22 +58,24 @@ export default function DashboardSidebar() {
         </p>
       </div>
 
-      {/* Role Toggle Shortcut inside Sidebar */}
-      <div className="px-4 py-3 border-b border-[#E7E5E4] bg-[#F5F5EB]">
-        <button
-          onClick={toggleRole}
-          className="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-[8px] bg-white border border-[#D6D3D1] hover:bg-[#F5F5EB] cursor-pointer transition-all duration-200"
-        >
-          <div className="flex items-center gap-1.5 text-[#1C1917]">
-            {role === "admin" ? (
-              <ShieldAlert className="w-3.5 h-3.5 text-amber-600" />
-            ) : (
-              <Briefcase className="w-3.5 h-3.5 text-[#166534]" />
-            )}
-            <span className="text-xs font-semibold">Switch to {role === "admin" ? "SME Portal" : "Admin Portal"}</span>
-          </div>
-        </button>
-      </div>
+      {/* Role Toggle Shortcut inside Sidebar - ONLY FOR ADMIN */}
+      {currentUser && currentUser.role === "admin" && (
+        <div className="px-4 py-3 border-b border-[#E7E5E4] bg-[#F5F5EB]">
+          <button
+            onClick={toggleRole}
+            className="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-[8px] bg-white border border-[#D6D3D1] hover:bg-[#F5F5EB] cursor-pointer transition-all duration-200"
+          >
+            <div className="flex items-center gap-1.5 text-[#1C1917]">
+              {role === "admin" ? (
+                <ShieldAlert className="w-3.5 h-3.5 text-amber-600" />
+              ) : (
+                <Briefcase className="w-3.5 h-3.5 text-[#166534]" />
+              )}
+              <span className="text-xs font-semibold">Switch to {role === "admin" ? "SME Portal" : "Admin Portal"}</span>
+            </div>
+          </button>
+        </div>
+      )}
 
       {/* Navigation Links */}
       <nav className="flex-1 px-4 py-6 space-y-1.5">
@@ -95,6 +98,31 @@ export default function DashboardSidebar() {
           );
         })}
       </nav>
+
+      {/* Profile & Logout Action inside Sidebar */}
+      {currentUser && (
+        <div className="p-4 border-t border-[#E7E5E4] bg-[#FAFAF5]">
+          <div className="flex items-center gap-2.5 mb-3">
+            <div className="p-1.5 rounded-full bg-[#166534]/10 text-[#166534]">
+              <User className="w-4 h-4 animate-in fade-in" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-bold text-[#1C1917] truncate">{currentUser.name}</p>
+              <p className="text-[9px] text-[#57534E] truncate mt-0.5">{currentUser.email}</p>
+            </div>
+          </div>
+          <button
+            onClick={() => {
+              logout();
+              router.push("/");
+            }}
+            className="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-[8px] border border-red-200 hover:bg-red-50 text-[11px] font-bold text-[#B91C1C] cursor-pointer transition-all duration-200 bg-white"
+          >
+            <ShieldAlert className="w-3.5 h-3.5 text-[#B91C1C]" />
+            <span>Keluar (Log Out)</span>
+          </button>
+        </div>
+      )}
 
       {/* Footer / Actions */}
       <div className="p-4 border-t border-[#E7E5E4]">

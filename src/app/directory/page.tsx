@@ -5,7 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useDemo } from "@/context/DemoContext";
-import { Search, Filter, ShieldCheck, HelpCircle, X, ListFilter } from "lucide-react";
+import { Search, Filter, ShieldCheck, HelpCircle, X, ListFilter, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
 function DirectoryContent() {
@@ -96,10 +96,21 @@ function DirectoryContent() {
 
   return (
     <div className="flex flex-col min-h-screen bg-[#FAFAF5]">
+      <Navbar />
       {/* Header Search Section */}
       <section className="bg-[#1C1917] text-white py-12 relative overflow-hidden">
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* Back button */}
+          <div className="mb-6 flex justify-start">
+            <Link 
+              href="/" 
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-[#86A873] hover:text-[#FAFAF5] transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4 text-[#86A873] hover:text-[#FAFAF5]" />
+              <span>Kembali ke Beranda</span>
+            </Link>
+          </div>
           <div className="max-w-3xl">
             <span className="text-xs font-bold text-[#86A873] uppercase tracking-widest block mb-2 font-sans">
               B2B Sourcing Directory

@@ -42,9 +42,42 @@ export interface Inquiry {
   createdAt: string;
 }
 
+export interface User {
+  id: string;
+  email: string;
+  name: string;
+  role: Role;
+  companyId?: string;
+}
+
+export const mockUsers: User[] = [
+  {
+    id: "usr-admin",
+    email: "admin@jabar.go.id",
+    name: "Rian Hendrayana",
+    role: "admin",
+  },
+  {
+    id: "usr-sme",
+    email: "sme@priangan.com",
+    name: "Ahmad Dahlan",
+    role: "sme",
+    companyId: "comp-1",
+  },
+  {
+    id: "usr-buyer",
+    email: "buyer@global.com",
+    name: "Hans Müller",
+    role: "buyer",
+  },
+];
+
 interface DemoContextType {
   role: Role;
   setRole: (role: Role) => void;
+  currentUser: User | null;
+  login: (email: string, password: string) => { success: boolean; error?: string };
+  logout: () => void;
   companies: Company[];
   products: Product[];
   inquiries: Inquiry[];
@@ -173,6 +206,7 @@ const initialInquiries: Inquiry[] = [
 
 export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [role, setRole] = useState<Role>("buyer");
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [companies, setCompanies] = useState<Company[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
@@ -183,6 +217,7 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const storedProducts = localStorage.getItem("jebar_products");
     const storedInquiries = localStorage.getItem("jebar_inquiries");
     const storedRole = localStorage.getItem("jebar_role");
+    const storedUser = localStorage.getItem("jebar_user");
 
     if (storedCompanies) setCompanies(JSON.parse(storedCompanies));
     else {
@@ -202,7 +237,22 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
       localStorage.setItem("jebar_inquiries", JSON.stringify(initialInquiries));
     }
 
-    if (storedRole) setRole(storedRole as Role);
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser) as User;
+      setCurrentUser(parsedUser);
+      if (parsedUser.role !== "admin") {
+        setRole(parsedUser.role);
+        localStorage.setItem("jebar_role", parsedUser.role);
+      } else if (storedRole) {
+        setRole(storedRole as Role);
+      } else {
+        setRole("admin");
+      }
+    } else {
+      setCurrentUser(null);
+      setRole("buyer");
+      localStorage.setItem("jebar_role", "buyer");
+    }
   }, []);
 
   const saveToStorage = (key: string, data: any) => {
@@ -210,8 +260,40 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const handleSetRole = (newRole: Role) => {
-    setRole(newRole);
-    localStorage.setItem("jebar_role", newRole);
+    if (currentUser && currentUser.role === "admin") {
+      setRole(newRole);
+      localStorage.setItem("jebar_role", newRole);
+    } else {
+      console.warn("Only admin can switch roles.");
+    }
+  };
+
+  const login = (email: string, password: string): { success: boolean; error?: string } => {
+    const matched = mockUsers.find(
+      (u) => u.email.toLowerCase() === email.toLowerCase()
+    );
+
+    if (!matched) {
+      return { success: false, error: "Email tidak terdaftar." };
+    }
+
+    const expectedPassword = matched.role === "admin" ? "admin123" : matched.role === "sme" ? "sme123" : "buyer123";
+    if (password !== expectedPassword) {
+      return { success: false, error: "Password salah." };
+    }
+
+    setCurrentUser(matched);
+    setRole(matched.role);
+    localStorage.setItem("jebar_user", JSON.stringify(matched));
+    localStorage.setItem("jebar_role", matched.role);
+    return { success: true };
+  };
+
+  const logout = () => {
+    setCurrentUser(null);
+    setRole("buyer");
+    localStorage.removeItem("jebar_user");
+    localStorage.setItem("jebar_role", "buyer");
   };
 
   const updateCompanyVerification = (companyId: string, verified: boolean) => {
@@ -276,6 +358,9 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
       value={{
         role,
         setRole: handleSetRole,
+        currentUser,
+        login,
+        logout,
         companies,
         products,
         inquiries,
