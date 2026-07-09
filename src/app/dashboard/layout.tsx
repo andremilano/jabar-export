@@ -12,7 +12,8 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { role, setRole, currentUser, logout } = useDemo();
+  const { role, setRole, currentUser, logout, companies } = useDemo();
+  const myCompany = companies.find((c) => c.id === currentUser?.companyId);
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
 
@@ -126,7 +127,7 @@ export default function DashboardLayout({
                   ? "bg-amber-50 text-amber-700 border-amber-300"
                   : "bg-forest-100 text-[#166534] border-forest-300"
               }`}>
-                {role === "admin" ? "Super Admin" : "Priangan Coffee"}
+                {role === "admin" ? "Super Admin" : (myCompany ? myCompany.name : "SME Partner")}
               </span>
             </div>
           </div>

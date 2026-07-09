@@ -3,12 +3,12 @@
 import React, { useState } from "react";
 import { useDemo } from "@/context/DemoContext";
 import { Building, ShieldCheck, FileText, Check, Upload, Save } from "lucide-react";
+import MapPicker from "@/components/MapPicker";
 
 export default function DashboardProfile() {
-  const { companies, updateCompanyVerification } = useDemo();
+  const { companies, updateCompanyVerification, updateCompany, currentUser } = useDemo();
 
-  // For simulation, we represent company ID "comp-1"
-  const myCompany = companies.find((c) => c.id === "comp-1") || companies[0];
+  const myCompany = companies.find((c) => c.id === currentUser?.companyId) || companies[0];
 
   // Local Form State
   const [name, setName] = useState(myCompany.name);
@@ -17,6 +17,8 @@ export default function DashboardProfile() {
   const [nib, setNib] = useState(myCompany.nib);
   const [npwp, setNpwp] = useState(myCompany.npwp);
   const [description, setDescription] = useState(myCompany.description);
+  const [latitude, setLatitude] = useState(myCompany.latitude ? myCompany.latitude.toString() : "");
+  const [longitude, setLongitude] = useState(myCompany.longitude ? myCompany.longitude.toString() : "");
   
   // Certifications list (mock upload list)
   const [certs, setCerts] = useState([
@@ -30,31 +32,26 @@ export default function DashboardProfile() {
 
   const handleSaveProfile = (e: React.FormEvent) => {
     e.preventDefault();
-    myCompany.name = name;
-    myCompany.establishedYear = Number(establishedYear);
-    myCompany.location = location;
-    myCompany.nib = nib;
-    myCompany.npwp = npwp;
-    myCompany.description = description;
 
-    const storedCompanies = localStorage.getItem("jebar_companies");
-    if (storedCompanies) {
-      const parsed = JSON.parse(storedCompanies);
-      const updated = parsed.map((c: any) =>
-        c.id === myCompany.id
-          ? {
-              ...c,
-              name,
-              establishedYear: Number(establishedYear),
-              location,
-              nib,
-              npwp,
-              description,
-            }
-          : c
-      );
-      localStorage.setItem("jebar_companies", JSON.stringify(updated));
+    if (latitude && (isNaN(Number(latitude)) || Number(latitude) < -90 || Number(latitude) > 90)) {
+      alert("Latitude harus berupa angka antara -90 dan 90.");
+      return;
     }
+    if (longitude && (isNaN(Number(longitude)) || Number(longitude) < -180 || Number(longitude) > 180)) {
+      alert("Longitude harus berupa angka antara -180 dan 180.");
+      return;
+    }
+
+    updateCompany(myCompany.id, {
+      name,
+      establishedYear: Number(establishedYear),
+      location,
+      nib,
+      npwp,
+      description,
+      latitude: latitude ? Number(latitude) : undefined,
+      longitude: longitude ? Number(longitude) : undefined,
+    });
 
     setIsSaved(true);
     setTimeout(() => setIsSaved(false), 2000);
@@ -141,6 +138,42 @@ export default function DashboardProfile() {
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 className="input-text"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <label className="input-label">Latitude Fasilitas (Opsional)</label>
+                <input
+                  type="text"
+                  placeholder="-7.0909"
+                  value={latitude}
+                  onChange={(e) => setLatitude(e.target.value)}
+                  className="input-text"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="input-label">Longitude Fasilitas (Opsional)</label>
+                <input
+                  type="text"
+                  placeholder="107.5186"
+                  value={longitude}
+                  onChange={(e) => setLongitude(e.target.value)}
+                  className="input-text"
+                />
+              </div>
+            </div>
+
+            {/* Interactive Map Picker */}
+            <div className="space-y-1">
+              <label className="input-label">Pilih Titik Lokasi Fasilitas</label>
+              <MapPicker
+                lat={latitude ? Number(latitude) : undefined}
+                lng={longitude ? Number(longitude) : undefined}
+                onChange={(lat, lng) => {
+                  setLatitude(lat.toFixed(6));
+                  setLongitude(lng.toFixed(6));
+                }}
               />
             </div>
 

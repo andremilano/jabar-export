@@ -14,10 +14,10 @@ import {
 } from "lucide-react";
 
 export default function DashboardOverview() {
-  const { role, products, inquiries, companies } = useDemo();
+  const { role, products, inquiries, companies, currentUser } = useDemo();
 
-  // Find company of current logged-in SME (Priangan Coffee Cooperative - comp-1)
-  const myCompany = companies.find((c) => c.id === "comp-1") || companies[0];
+  // Find company of current logged-in SME
+  const myCompany = companies.find((c) => c.id === currentUser?.companyId) || companies[0];
   
   // SME Metrics
   const myProductsCount = products.filter((p) => p.companyId === myCompany.id).length;

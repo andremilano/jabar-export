@@ -14,6 +14,8 @@ export interface Company {
   npwp: string;
   location: string;
   logo: string;
+  latitude?: number;
+  longitude?: number;
 }
 
 export interface Product {
@@ -48,6 +50,7 @@ export interface User {
   name: string;
   role: Role;
   companyId?: string;
+  password?: string;
 }
 
 export const mockUsers: User[] = [
@@ -83,9 +86,14 @@ interface DemoContextType {
   inquiries: Inquiry[];
   updateCompanyVerification: (companyId: string, verified: boolean) => void;
   addCompany: (company: Omit<Company, "id" | "isVerified">) => void;
+  updateCompany: (companyId: string, updatedCompany: Partial<Company>) => void;
   addProduct: (product: Omit<Product, "id" | "companyId" | "companyName">) => void;
   editProduct: (productId: string, updatedProduct: Partial<Product>) => void;
   addInquiry: (inquiry: Omit<Inquiry, "id" | "createdAt" | "productName" | "companyId">) => void;
+  registerSme: (
+    userData: Omit<User, "id" | "role" | "companyId">,
+    companyData: Omit<Company, "id" | "isVerified">
+  ) => { success: boolean; error?: string };
 }
 
 const DemoContext = createContext<DemoContextType | undefined>(undefined);
@@ -101,6 +109,8 @@ const initialCompanies: Company[] = [
     npwp: "01.234.567.8-403.000",
     location: "Bandung Regency, West Java",
     logo: "coffee",
+    latitude: -7.0909,
+    longitude: 107.5186,
   },
   {
     id: "comp-2",
@@ -112,6 +122,8 @@ const initialCompanies: Company[] = [
     npwp: "01.234.567.8-442.000",
     location: "Garut Regency, West Java",
     logo: "textile",
+    latitude: -7.2278,
+    longitude: 107.9086,
   },
   {
     id: "comp-3",
@@ -123,6 +135,8 @@ const initialCompanies: Company[] = [
     npwp: "01.234.567.8-426.000",
     location: "Cirebon Regency, West Java",
     logo: "craft",
+    latitude: -6.7216,
+    longitude: 108.5560,
   },
 ];
 
@@ -210,6 +224,7 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [companies, setCompanies] = useState<Company[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
 
   // Load from localStorage or set defaults
   useEffect(() => {
@@ -218,8 +233,24 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const storedInquiries = localStorage.getItem("jebar_inquiries");
     const storedRole = localStorage.getItem("jebar_role");
     const storedUser = localStorage.getItem("jebar_user");
+    const storedUsers = localStorage.getItem("jebar_users");
 
-    if (storedCompanies) setCompanies(JSON.parse(storedCompanies));
+    if (storedCompanies) {
+      const parsed = JSON.parse(storedCompanies) as Company[];
+      const migrated = parsed.map((c) => {
+        const initial = initialCompanies.find((ic) => ic.id === c.id);
+        if (initial && (c.latitude === undefined || c.longitude === undefined)) {
+          return {
+            ...c,
+            latitude: initial.latitude,
+            longitude: initial.longitude,
+          };
+        }
+        return c;
+      });
+      setCompanies(migrated);
+      localStorage.setItem("jebar_companies", JSON.stringify(migrated));
+    }
     else {
       setCompanies(initialCompanies);
       localStorage.setItem("jebar_companies", JSON.stringify(initialCompanies));
@@ -235,6 +266,13 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
     else {
       setInquiries(initialInquiries);
       localStorage.setItem("jebar_inquiries", JSON.stringify(initialInquiries));
+    }
+
+    if (storedUsers) {
+      setUsers(JSON.parse(storedUsers));
+    } else {
+      setUsers(mockUsers);
+      localStorage.setItem("jebar_users", JSON.stringify(mockUsers));
     }
 
     if (storedUser) {
@@ -269,7 +307,7 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const login = (email: string, password: string): { success: boolean; error?: string } => {
-    const matched = mockUsers.find(
+    const matched = users.find(
       (u) => u.email.toLowerCase() === email.toLowerCase()
     );
 
@@ -277,7 +315,7 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return { success: false, error: "Email tidak terdaftar." };
     }
 
-    const expectedPassword = matched.role === "admin" ? "admin123" : matched.role === "sme" ? "sme123" : "buyer123";
+    const expectedPassword = matched.password || (matched.role === "admin" ? "admin123" : matched.role === "sme" ? "sme123" : "buyer123");
     if (password !== expectedPassword) {
       return { success: false, error: "Password salah." };
     }
@@ -315,9 +353,16 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
     saveToStorage("jebar_companies", updated);
   };
 
+  const updateCompany = (companyId: string, updatedCompany: Partial<Company>) => {
+    const updated = companies.map((c) =>
+      c.id === companyId ? { ...c, ...updatedCompany } : c
+    );
+    setCompanies(updated);
+    saveToStorage("jebar_companies", updated);
+  };
+
   const addProduct = (productData: Omit<Product, "id" | "companyId" | "companyName">) => {
-    // For demo, assume added by the active SME company (comp-1)
-    const activeCompany = companies.find((c) => c.id === "comp-1") || companies[0];
+    const activeCompany = companies.find((c) => c.id === currentUser?.companyId) || companies[0];
     const newProduct: Product = {
       ...productData,
       id: `prod-${Date.now()}`,
@@ -353,6 +398,48 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
     saveToStorage("jebar_inquiries", updated);
   };
 
+  const registerSme = (
+    userData: Omit<User, "id" | "role" | "companyId">,
+    companyData: Omit<Company, "id" | "isVerified">
+  ): { success: boolean; error?: string } => {
+    const emailExists = users.some(
+      (u) => u.email.toLowerCase() === userData.email.toLowerCase()
+    );
+    if (emailExists) {
+      return { success: false, error: "Email sudah terdaftar." };
+    }
+
+    const nibExists = companies.some((c) => c.nib === companyData.nib);
+    if (nibExists) {
+      return { success: false, error: "NIB sudah terdaftar oleh perusahaan lain." };
+    }
+
+    const companyId = `comp-${Date.now()}`;
+    const newCompany: Company = {
+      ...companyData,
+      id: companyId,
+      isVerified: false,
+    };
+
+    const newUserId = `usr-${Date.now()}`;
+    const newUser: User = {
+      ...userData,
+      id: newUserId,
+      role: "sme",
+      companyId: companyId,
+    };
+
+    const updatedUsers = [...users, newUser];
+    setUsers(updatedUsers);
+    saveToStorage("jebar_users", updatedUsers);
+
+    const updatedCompanies = [...companies, newCompany];
+    setCompanies(updatedCompanies);
+    saveToStorage("jebar_companies", updatedCompanies);
+
+    return { success: true };
+  };
+
   return (
     <DemoContext.Provider
       value={{
@@ -366,9 +453,11 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
         inquiries,
         updateCompanyVerification,
         addCompany,
+        updateCompany,
         addProduct,
         editProduct,
         addInquiry,
+        registerSme,
       }}
     >
       {children}

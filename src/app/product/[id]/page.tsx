@@ -5,6 +5,10 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useDemo } from "@/context/DemoContext";
+import dynamic from "next/dynamic";
+
+const ProductMap = dynamic(() => import("@/components/ProductMap"), { ssr: false });
+
 import { ShieldCheck, ArrowLeft, Send, CheckCircle, MapPin, Calendar, HelpCircle, FileText, Check, Coffee, Scissors, Hammer, Building2 } from "lucide-react";
 
 function CompanyLogo({ logo }: { logo?: string }) {
@@ -194,6 +198,24 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                 ))}
               </div>
             </div>
+
+            {/* Production Location Map */}
+            {company?.latitude && company?.longitude && (
+              <div className="p-8 bg-white rounded-[12px] border border-[#E7E5E4] border-b-2 border-b-[#D6D3D1] space-y-6">
+                <h3 className="text-sm font-bold text-[#1C1917] uppercase tracking-wider flex items-center gap-2 font-serif">
+                  <MapPin className="w-5 h-5 text-[#166534]" />
+                  <span>Production Facility Location</span>
+                </h3>
+                <p className="text-xs text-[#57534E] leading-relaxed font-sans">
+                  Lokasi produksi dan operasional resmi dari <b>{company.name}</b> yang telah terdaftar di Jawa Barat.
+                </p>
+                <ProductMap 
+                  lat={Number(company.latitude)} 
+                  lng={Number(company.longitude)} 
+                  companyName={company.name} 
+                />
+              </div>
+            )}
 
           </div>
 

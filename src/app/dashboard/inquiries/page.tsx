@@ -6,9 +6,9 @@ import { useDemo } from "@/context/DemoContext";
 import { Mail, Globe, Send, User, ChevronRight, Check, X, FileText } from "lucide-react";
 
 export default function DashboardInquiries() {
-  const { inquiries, companies } = useDemo();
+  const { inquiries, companies, currentUser } = useDemo();
 
-  const myCompany = companies.find((c) => c.id === "comp-1") || companies[0];
+  const myCompany = companies.find((c) => c.id === currentUser?.companyId) || companies[0];
   const myInquiries = inquiries.filter((inq) => inq.companyId === myCompany.id);
 
   // Master-Detail State: default to first inquiry if available

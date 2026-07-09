@@ -6,9 +6,9 @@ import { ShoppingBag, Plus, X, Edit, Eye, Check } from "lucide-react";
 import Link from "next/link";
 
 export default function DashboardProducts() {
-  const { products, companies, addProduct, editProduct } = useDemo();
+  const { products, companies, addProduct, editProduct, currentUser } = useDemo();
 
-  const myCompany = companies.find((c) => c.id === "comp-1") || companies[0];
+  const myCompany = companies.find((c) => c.id === currentUser?.companyId) || companies[0];
   const myProducts = products.filter((p) => p.companyId === myCompany.id);
 
   // Modal / Form state

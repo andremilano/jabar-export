@@ -155,6 +155,14 @@ export default function LoginPage() {
             </button>
           </form>
 
+          {/* Registration Prompt */}
+          <div className="text-center text-xs text-[#57534E] pt-1">
+            <span>Belum punya akun mitra? </span>
+            <Link href="/register" className="font-bold text-[#166534] hover:underline">
+              Daftar Sebagai Mitra Baru
+            </Link>
+          </div>
+
           {/* Divider */}
           <div className="relative flex py-2 items-center">
             <div className="flex-grow border-t border-[#E7E5E4]"></div>
