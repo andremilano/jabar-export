@@ -45,7 +45,7 @@ export default function DashboardLayout({
             <p className="text-xs text-[#57534E] leading-relaxed">
               {currentUser.role === "admin"
                 ? "Anda sedang berada dalam mode Buyer (Publik). Silakan pilih profil simulasi di bawah ini untuk kembali mengakses dashboard manajemen:"
-                : "Akun Anda saat ini masuk sebagai Buyer. Dashboard ini hanya ditujukan untuk Mitra UMKM (SME) dan Admin Dinas."}
+                : "Akun Anda saat ini masuk sebagai Buyer. Dashboard ini hanya ditujukan untuk Mitra UMKM (SME) dan Platform Admin."}
             </p>
           </div>
 
@@ -64,7 +64,7 @@ export default function DashboardLayout({
                 className="w-full flex items-center justify-center gap-2 p-3.5 rounded-[8px] bg-[#A47148] hover:bg-[#8B5E3C] text-white text-xs font-bold transition-all shadow-none cursor-pointer border-none"
               >
                 <UserCheck className="w-4.5 h-4.5 text-[#FAFAF5]" />
-                <span>Masuk Sebagai Admin Dinas (Kurator)</span>
+                <span>Masuk Sebagai Platform Admin (Kurator)</span>
               </button>
             </div>
           ) : (
@@ -109,7 +109,7 @@ export default function DashboardLayout({
         <header className="h-20 border-b border-[#D6D3D1] px-8 flex items-center justify-between bg-white shrink-0 font-sans shadow-none">
           <div>
             <h2 className="text-sm font-bold text-[#1C1917] font-serif">
-              {role === "admin" ? "Disperindag Admin Console" : "SME Export Dashboard"}
+              {role === "admin" ? "Platform Admin Console" : "SME Export Dashboard"}
             </h2>
           </div>
           

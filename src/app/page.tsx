@@ -123,7 +123,7 @@ export default function Home() {
               </div>
               <div className="flex items-center justify-center gap-2 col-span-2 md:col-span-1">
                 <BadgeCheck className="w-5 h-5 text-[#166534]" />
-                <span>Official Government-Backed</span>
+                <span>Independent B2B Trade Network</span>
               </div>
             </div>
           </div>
@@ -296,7 +296,7 @@ export default function Home() {
               </span>
               <h3 className="text-xl font-bold font-serif text-[#1C1917]">UMKM Jawa Barat: Masuk ke Pasar Ekspor Global</h3>
               <p className="text-xs text-[#57534E] leading-relaxed font-sans">
-                Tampilkan produk Anda ke pembeli dari Eropa, Amerika, Australia, dan Asia. Dapatkan validasi legalitas secara resmi dari Dinas Perdagangan untuk meningkatkan kepercayaan pembeli internasional.
+                Tampilkan produk Anda ke pembeli dari Eropa, Amerika, Australia, dan Asia. Berlangganan status Premium untuk mendapatkan eksposur maksimal dan meningkatkan kepercayaan pembeli internasional.
               </p>
               <Link
                 href="/dashboard"

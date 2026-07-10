@@ -14,10 +14,11 @@ import {
   Briefcase,
   ShieldAlert,
   User,
+  CreditCard,
 } from "lucide-react";
 
 export default function DashboardSidebar() {
-  const { role, setRole, currentUser, logout } = useDemo();
+  const { role, setRole, currentUser, logout, companies } = useDemo();
   const pathname = usePathname();
   const router = useRouter();
 
@@ -26,6 +27,7 @@ export default function DashboardSidebar() {
     { name: "My Products", href: "/dashboard/products", icon: ShoppingBag },
     { name: "Profile & Capacity", href: "/dashboard/profile", icon: Building },
     { name: "Inbox Inquiries", href: "/dashboard/inquiries", icon: Mail },
+    { name: "Billing & Plan", href: "/dashboard/billing", icon: CreditCard },
   ];
 
   const getAdminLinks = () => [
@@ -109,6 +111,25 @@ export default function DashboardSidebar() {
             <div className="min-w-0 flex-1">
               <p className="text-xs font-bold text-[#1C1917] truncate">{currentUser.name}</p>
               <p className="text-[9px] text-[#57534E] truncate mt-0.5">{currentUser.email}</p>
+              {role === "sme" && (
+                <div className="mt-1">
+                  {(() => {
+                    const myCompany = companies.find((c) => c.id === currentUser.companyId);
+                    if (myCompany?.isPremium) {
+                      return (
+                        <span className="px-1.5 py-0.5 rounded-[4px] bg-[#166534] text-white text-[9px] font-bold uppercase tracking-wider">
+                          Premium Supplier
+                        </span>
+                      );
+                    }
+                    return (
+                      <span className="px-1.5 py-0.5 rounded-[4px] bg-[#A47148] text-white text-[9px] font-bold uppercase tracking-wider">
+                        Free Plan
+                      </span>
+                    );
+                  })()}
+                </div>
+              )}
             </div>
           </div>
           <button

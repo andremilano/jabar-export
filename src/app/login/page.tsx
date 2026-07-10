@@ -185,8 +185,8 @@ export default function LoginPage() {
                   <ShieldAlert className="w-4 h-4" />
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-[#1C1917] group-hover:text-amber-800">Super Admin Dinas</p>
-                  <p className="text-[10px] text-[#57534E]">admin@jabar.go.id / admin123</p>
+                  <p className="text-xs font-bold text-[#1C1917] group-hover:text-amber-800">Platform Super Admin</p>
+                  <p className="text-[10px] text-[#57534E]">admin@jabarexporthub.com / admin123</p>
                 </div>
               </div>
               <span className="text-[10px] font-bold text-amber-600 bg-amber-100/50 px-2 py-0.5 rounded-[4px]">
@@ -239,8 +239,8 @@ export default function LoginPage() {
 
       {/* Footer */}
       <div className="text-center text-[10px] text-[#A8A29E] font-medium max-w-md w-full mx-auto">
-        <p>&copy; 2026 Pemerintah Provinsi Jawa Barat. All rights reserved.</p>
-        <p className="mt-1">Dinas Perindustrian dan Perdagangan (Disperindag) Jawa Barat.</p>
+        <p>&copy; 2026 Jabar Export Hub. All rights reserved.</p>
+        <p className="mt-1">Independent B2B Trade Network.</p>
       </div>
     </div>
   );

@@ -22,7 +22,7 @@ export default function Footer() {
             </p>
             <div className="flex items-center gap-2 pt-2 text-[10px] text-[#86A873] font-semibold tracking-wider uppercase">
               <Leaf className="w-4 h-4 text-[#86A873]" />
-              <span>West Java Government Initiative</span>
+              <span>Verified Premium Network</span>
             </div>
           </div>
 
@@ -92,11 +92,11 @@ export default function Footer() {
             <ul className="space-y-3 text-xs text-[#A8A29E]">
               <li className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-[#86A873] shrink-0 mt-0.5" />
-                <span>Dinas Perindustrian dan Perdagangan Provinsi Jawa Barat, Jl. Asia Afrika No.1, Bandung, Indonesia</span>
+                <span>Jabar Export Hub HQ, Jl. Braga No. 10, Bandung, Indonesia</span>
               </li>
               <li className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-[#86A873] shrink-0" />
-                <span>support@jabarexporthub.go.id</span>
+                <span>support@jabarexporthub.com</span>
               </li>
               <li className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-[#86A873] shrink-0" />
@@ -111,7 +111,7 @@ export default function Footer() {
           <div className="flex gap-6">
             <span className="hover:text-[#86A873] cursor-pointer">Privacy Policy</span>
             <span className="hover:text-[#86A873] cursor-pointer">Terms of Service</span>
-            <span className="hover:text-[#86A873] cursor-pointer">Disperindag Jabar</span>
+            <span className="hover:text-[#86A873] cursor-pointer">Partners</span>
           </div>
         </div>
       </div>

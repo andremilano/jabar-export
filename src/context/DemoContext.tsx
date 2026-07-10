@@ -10,6 +10,7 @@ export interface Company {
   establishedYear: number;
   description: string;
   isVerified: boolean;
+  isPremium?: boolean;
   nib: string;
   npwp: string;
   location: string;
@@ -87,6 +88,7 @@ interface DemoContextType {
   updateCompanyVerification: (companyId: string, verified: boolean) => void;
   addCompany: (company: Omit<Company, "id" | "isVerified">) => void;
   updateCompany: (companyId: string, updatedCompany: Partial<Company>) => void;
+  upgradeToPremium: (companyId: string) => void;
   addProduct: (product: Omit<Product, "id" | "companyId" | "companyName">) => void;
   editProduct: (productId: string, updatedProduct: Partial<Product>) => void;
   addInquiry: (inquiry: Omit<Inquiry, "id" | "createdAt" | "productName" | "companyId">) => void;
@@ -105,6 +107,7 @@ const initialCompanies: Company[] = [
     establishedYear: 2015,
     description: "Koperasi produsen kopi Arabika specialty Sunda Hejo di dataran tinggi Ciwidey dengan proses pasca-panen basah, natural, dan honey. Berkomitmen pada keberlanjutan lingkungan dan pemberdayaan petani kopi lokal Jawa Barat.",
     isVerified: true,
+    isPremium: true,
     nib: "9120005432101",
     npwp: "01.234.567.8-403.000",
     location: "Bandung Regency, West Java",
@@ -118,6 +121,7 @@ const initialCompanies: Company[] = [
     establishedYear: 2012,
     description: "Pusat tenun sutra alam premium khas Garut. Kami menggunakan serat sutra alami pilihan dan pewarna organik dari tumbuh-tumbuhan lokal untuk menciptakan kain tenun bermotif tradisional Sunda yang mewah dan ramah lingkungan.",
     isVerified: true,
+    isPremium: false,
     nib: "9120005432102",
     npwp: "01.234.567.8-442.000",
     location: "Garut Regency, West Java",
@@ -131,6 +135,7 @@ const initialCompanies: Company[] = [
     establishedYear: 2020,
     description: "Pengrajin kriya kayu dan rotan estetik untuk pasar ekspor. Kami mendesain mebel kecil, dekorasi dinding, dan perabot rumah tangga dengan sentuhan minimalis modern yang dipadukan dengan teknik anyaman rotan tradisional Cirebon.",
     isVerified: false,
+    isPremium: false,
     nib: "9120005432103",
     npwp: "01.234.567.8-426.000",
     location: "Cirebon Regency, West Java",
@@ -361,6 +366,14 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
     saveToStorage("jebar_companies", updated);
   };
 
+  const upgradeToPremium = (companyId: string) => {
+    const updated = companies.map((c) =>
+      c.id === companyId ? { ...c, isPremium: true } : c
+    );
+    setCompanies(updated);
+    saveToStorage("jebar_companies", updated);
+  };
+
   const addProduct = (productData: Omit<Product, "id" | "companyId" | "companyName">) => {
     const activeCompany = companies.find((c) => c.id === currentUser?.companyId) || companies[0];
     const newProduct: Product = {
@@ -454,6 +467,7 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
         updateCompanyVerification,
         addCompany,
         updateCompany,
+        upgradeToPremium,
         addProduct,
         editProduct,
         addInquiry,

@@ -593,8 +593,8 @@ export default function RegisterPage() {
 
       {/* Footer */}
       <div className="text-center text-[10px] text-[#A8A29E] font-medium max-w-md w-full mx-auto pt-8">
-        <p>&copy; 2026 Pemerintah Provinsi Jawa Barat. All rights reserved.</p>
-        <p className="mt-1">Dinas Perindustrian dan Perdagangan (Disperindag) Jawa Barat.</p>
+        <p>&copy; 2026 Jabar Export Hub. All rights reserved.</p>
+        <p className="mt-1">Independent B2B Trade Network.</p>
       </div>
     </div>
   );
