@@ -1,8 +1,11 @@
 import React from "react";
 import Link from "next/link";
 import { Mail, Phone, MapPin, Leaf } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function Footer() {
+  const { language } = useLanguage();
+
   return (
     <footer className="bg-[#1C1917] text-[#FAFAF5] border-t border-[#2A2725] mt-auto transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -18,7 +21,9 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-xs text-[#A8A29E] leading-relaxed">
-              Direktori ekspor B2B resmi Jawa Barat, mempromosikan komoditas lokal unggulan (Kopi, Teh, Kriya, Tekstil) agar mudah ditemukan dan dibeli oleh importir di seluruh dunia.
+              {language === "id"
+                ? "Direktori ekspor B2B resmi Jawa Barat, mempromosikan komoditas lokal unggulan (Kopi, Teh, Kriya, Tekstil) agar mudah ditemukan dan dibeli oleh importir di seluruh dunia."
+                : "Official West Java B2B export directory, promoting featured local commodities (Coffee, Tea, Craft, Textile) to be easily discovered and sourced by global importers."}
             </p>
             <div className="flex items-center gap-2 pt-2 text-[10px] text-[#86A873] font-semibold tracking-wider uppercase">
               <Leaf className="w-4 h-4 text-[#86A873]" />
@@ -29,27 +34,27 @@ export default function Footer() {
           {/* Directory Links */}
           <div className="space-y-4">
             <h3 className="text-sm font-semibold tracking-wider text-white uppercase font-serif">
-              Browse Categories
+              {language === "id" ? "Telusuri Kategori" : "Browse Categories"}
             </h3>
             <ul className="space-y-2 text-xs text-[#A8A29E]">
               <li>
                 <Link href="/directory?category=Kopi" className="hover:text-[#86A873] transition-colors">
-                  Kopi Arabika & Robusta
+                  {language === "id" ? "Kopi Arabika & Robusta" : "Arabica & Robusta Coffee"}
                 </Link>
               </li>
               <li>
                 <Link href="/directory?category=Teh" className="hover:text-[#86A873] transition-colors">
-                  Teh Premium Highland
+                  {language === "id" ? "Teh Premium Highland" : "Premium Highland Tea"}
                 </Link>
               </li>
               <li>
                 <Link href="/directory?category=Kriya" className="hover:text-[#86A873] transition-colors">
-                  Kriya Kayu & Anyaman Rotan
+                  {language === "id" ? "Kriya Kayu & Anyaman Rotan" : "Woodcraft & Rattan Weaving"}
                 </Link>
               </li>
               <li>
                 <Link href="/directory?category=Tekstil" className="hover:text-[#86A873] transition-colors">
-                  Kain & Busana Tenun Sutra
+                  {language === "id" ? "Kain & Busana Tenun Sutra" : "Silk Handwoven Fabric & Apparel"}
                 </Link>
               </li>
             </ul>
@@ -58,27 +63,27 @@ export default function Footer() {
           {/* SME & Buyer Portals */}
           <div className="space-y-4">
             <h3 className="text-sm font-semibold tracking-wider text-white uppercase font-serif">
-              Portals & Services
+              {language === "id" ? "Portal & Layanan" : "Portals & Services"}
             </h3>
             <ul className="space-y-2 text-xs text-[#A8A29E]">
               <li>
                 <Link href="/directory" className="hover:text-[#86A873] transition-colors">
-                  Find Supplier Directory
+                  {language === "id" ? "Cari Direktori Pemasok" : "Find Supplier Directory"}
                 </Link>
               </li>
               <li>
                 <Link href="/dashboard" className="hover:text-[#86A873] transition-colors">
-                  SME Partner Dashboard
+                  {language === "id" ? "Dashboard Mitra UMKM" : "SME Partner Dashboard"}
                 </Link>
               </li>
               <li>
                 <Link href="/dashboard" className="hover:text-[#86A873] transition-colors">
-                  Admin Curator Console
+                  {language === "id" ? "Konsol Kurator Admin" : "Admin Curator Console"}
                 </Link>
               </li>
               <li>
                 <span className="cursor-not-allowed opacity-50">
-                  Export Consultation Center
+                  {language === "id" ? "Pusat Konsultasi Ekspor" : "Export Consultation Center"}
                 </span>
               </li>
             </ul>
@@ -87,7 +92,7 @@ export default function Footer() {
           {/* Contact Details */}
           <div className="space-y-4">
             <h3 className="text-sm font-semibold tracking-wider text-white uppercase font-serif">
-              Contact Desk
+              {language === "id" ? "Meja Kontak" : "Contact Desk"}
             </h3>
             <ul className="space-y-3 text-xs text-[#A8A29E]">
               <li className="flex items-start gap-2.5">
@@ -107,11 +112,11 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-[#2A2725] mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-[#57534E]">
-          <p>© {new Date().getFullYear()} Jabar Export Hub. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Jabar Export Hub. {language === "id" ? "Hak cipta dilindungi undang-undang." : "All rights reserved."}</p>
           <div className="flex gap-6">
-            <span className="hover:text-[#86A873] cursor-pointer">Privacy Policy</span>
-            <span className="hover:text-[#86A873] cursor-pointer">Terms of Service</span>
-            <span className="hover:text-[#86A873] cursor-pointer">Partners</span>
+            <span className="hover:text-[#86A873] cursor-pointer">{language === "id" ? "Kebijakan Privasi" : "Privacy Policy"}</span>
+            <span className="hover:text-[#86A873] cursor-pointer">{language === "id" ? "Syarat Layanan" : "Terms of Service"}</span>
+            <span className="hover:text-[#86A873] cursor-pointer">{language === "id" ? "Mitra" : "Partners"}</span>
           </div>
         </div>
       </div>

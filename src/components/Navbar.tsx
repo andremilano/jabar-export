@@ -4,10 +4,12 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useDemo, Role } from "@/context/DemoContext";
+import { useLanguage } from "@/context/LanguageContext";
 import { Menu, X, Globe, User, ShieldAlert, Briefcase, ChevronDown, LayoutDashboard } from "lucide-react";
 
 export default function Navbar() {
   const { role, setRole, currentUser, logout } = useDemo();
+  const { language, setLanguage, t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [showRoleDropdown, setShowRoleDropdown] = useState(false);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
@@ -28,8 +30,8 @@ export default function Navbar() {
   };
 
   const navLinks = [
-    { name: "Home", href: "/" },
-    { name: "Directory", href: "/directory" },
+    { name: t("nav_home"), href: "/" },
+    { name: t("nav_directory"), href: "/directory" },
   ];
 
   const getRoleBadgeColor = (r: Role) => {
@@ -46,8 +48,8 @@ export default function Navbar() {
   const getRoleLabel = (r: Role) => {
     switch (r) {
       case "admin": return "Super Admin";
-      case "sme": return "UMKM Partner";
-      default: return "International Buyer";
+      case "sme": return language === "id" ? "Mitra UMKM" : "SME Partner";
+      default: return language === "id" ? "Pembeli Internasional" : "International Buyer";
     }
   };
 
@@ -89,6 +91,29 @@ export default function Navbar() {
 
           {/* User Control & CTA Buttons (Desktop) */}
           <div className="hidden md:flex items-center space-x-4">
+            {/* Language Switcher */}
+            <div className="flex items-center rounded-[8px] bg-white border border-[#D6D3D1] p-0.5 text-xs font-semibold overflow-hidden">
+              <button
+                onClick={() => setLanguage("id")}
+                className={`px-2.5 py-1 rounded-[6px] transition-colors cursor-pointer border-none ${
+                  language === "id"
+                    ? "bg-[#166534] text-white font-bold"
+                    : "text-[#57534E] hover:text-[#1C1917] bg-transparent"
+                }`}
+              >
+                ID
+              </button>
+              <button
+                onClick={() => setLanguage("en")}
+                className={`px-2.5 py-1 rounded-[6px] transition-colors cursor-pointer border-none ${
+                  language === "en"
+                    ? "bg-[#166534] text-white font-bold"
+                    : "text-[#57534E] hover:text-[#1C1917] bg-transparent"
+                }`}
+              >
+                EN
+              </button>
+            </div>
             {currentUser ? (
               <>
                 {/* Demo Role Switcher - ONLY FOR ADMIN */}
@@ -103,7 +128,7 @@ export default function Navbar() {
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#A47148] opacity-75"></span>
                         <span className="relative inline-flex rounded-full h-2 w-2 bg-[#A47148]"></span>
                       </span>
-                      <span>Role Active: </span>
+                      <span>{language === "id" ? "Peran Aktif: " : "Active Role: "}</span>
                       <span className={`px-2 py-0.5 rounded-[4px] text-[10px] uppercase font-bold tracking-wider ${getRoleBadgeColor(role)}`}>
                         {getRoleLabel(role)}
                       </span>
@@ -114,7 +139,7 @@ export default function Navbar() {
                       <div className="absolute right-0 mt-2 w-56 rounded-[12px] bg-white border border-[#D6D3D1] border-b-[3px] border-b-[#A8A29E] py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
                         <div className="px-3 py-2 border-b border-[#E7E5E4]">
                           <p className="text-[10px] font-bold text-[#A8A29E] uppercase tracking-widest">
-                            Ganti Role (Admin Only)
+                            {language === "id" ? "Ganti Peran (Khusus Admin)" : "Switch Role (Admin Only)"}
                           </p>
                         </div>
                         <button
@@ -179,21 +204,21 @@ export default function Navbar() {
                           className="w-full text-left px-4 py-2 text-xs font-medium text-[#1C1917] hover:bg-[#F5F5EB] flex items-center gap-2 cursor-pointer transition-colors"
                         >
                           <LayoutDashboard className="w-4 h-4 text-[#166534]" />
-                          <span>Ke Dashboard</span>
+                          <span>{t("nav_dashboard")}</span>
                         </Link>
                       )}
 
-                      <button
-                        onClick={() => {
-                          logout();
-                          setShowUserDropdown(false);
-                          router.push("/");
-                        }}
-                        className="w-full text-left px-4 py-2 text-xs font-medium text-[#B91C1C] hover:bg-red-50 flex items-center gap-2 cursor-pointer transition-colors border-none"
-                      >
-                        <ShieldAlert className="w-4 h-4 text-[#B91C1C]" />
-                        <span>Keluar (Log Out)</span>
-                      </button>
+                        <button
+                          onClick={() => {
+                            logout();
+                            setShowUserDropdown(false);
+                            router.push("/");
+                          }}
+                          className="w-full text-left px-4 py-2 text-xs font-medium text-[#B91C1C] hover:bg-red-50 flex items-center gap-2 cursor-pointer transition-colors border-none"
+                        >
+                          <ShieldAlert className="w-4 h-4 text-[#B91C1C]" />
+                          <span>{t("nav_logout")}</span>
+                        </button>
                     </div>
                   )}
                 </div>
@@ -205,7 +230,7 @@ export default function Navbar() {
                 className="btn-primary flex items-center gap-2 text-xs"
               >
                 <User className="w-4 h-4" />
-                <span>Masuk Partner</span>
+                <span>{t("nav_login")}</span>
               </Link>
             )}
           </div>
@@ -248,6 +273,35 @@ export default function Navbar() {
               );
             })}
             
+            {/* Mobile Language Switcher */}
+            <div className="px-3 py-2.5 border-t border-[#E7E5E4] flex items-center justify-between text-xs font-semibold">
+              <span className="text-[#57534E] font-medium">{language === "id" ? "Pilih Bahasa" : "Select Language"}</span>
+              <div className="flex items-center rounded-[8px] bg-white border border-[#D6D3D1] p-0.5 overflow-hidden">
+                <button
+                  onClick={() => {
+                    setLanguage("id");
+                    setIsOpen(false);
+                  }}
+                  className={`px-3 py-1 rounded-[6px] text-[10px] transition-colors cursor-pointer border-none ${
+                    language === "id" ? "bg-[#166534] text-white font-bold" : "text-[#57534E] bg-transparent"
+                  }`}
+                >
+                  ID
+                </button>
+                <button
+                  onClick={() => {
+                    setLanguage("en");
+                    setIsOpen(false);
+                  }}
+                  className={`px-3 py-1 rounded-[6px] text-[10px] transition-colors cursor-pointer border-none ${
+                    language === "en" ? "bg-[#166534] text-white font-bold" : "text-[#57534E] bg-transparent"
+                  }`}
+                >
+                  EN
+                </button>
+              </div>
+            </div>
+
             {/* Mobile Role Switching - ONLY FOR ADMIN */}
             {currentUser && currentUser.role === "admin" && (
               <div className="pt-4 pb-2 border-t border-[#E7E5E4]">
@@ -329,17 +383,17 @@ export default function Navbar() {
                     }}
                     className="w-full py-2.5 px-4 rounded-[8px] border border-[#B91C1C] hover:bg-red-50 text-[#B91C1C] text-xs font-bold transition-all text-center flex items-center justify-center gap-2 cursor-pointer bg-transparent"
                   >
-                    <span>Log Out (Keluar)</span>
+                    <span>{t("nav_logout")}</span>
                   </button>
                 </div>
               ) : (
                 <Link
                   href="/login"
                   onClick={() => setIsOpen(false)}
-                  className="w-full btn-primary flex items-center justify-center gap-2"
+                  className="w-full btn-primary flex items-center justify-center gap-2 text-xs"
                 >
                   <User className="w-4 h-4" />
-                  <span>Masuk Partner</span>
+                  <span>{t("nav_login")}</span>
                 </Link>
               )}
             </div>

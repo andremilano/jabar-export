@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useDemo, Role } from "@/context/DemoContext";
+import { useLanguage } from "@/context/LanguageContext";
 import {
   LayoutDashboard,
   ShoppingBag,
@@ -19,20 +20,21 @@ import {
 
 export default function DashboardSidebar() {
   const { role, setRole, currentUser, logout, companies } = useDemo();
+  const { language, t } = useLanguage();
   const pathname = usePathname();
   const router = useRouter();
 
   const getSmeLinks = () => [
-    { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
-    { name: "My Products", href: "/dashboard/products", icon: ShoppingBag },
-    { name: "Profile & Capacity", href: "/dashboard/profile", icon: Building },
-    { name: "Inbox Inquiries", href: "/dashboard/inquiries", icon: Mail },
-    { name: "Billing & Plan", href: "/dashboard/billing", icon: CreditCard },
+    { name: t("db_sidebar_overview"), href: "/dashboard", icon: LayoutDashboard },
+    { name: t("db_sidebar_products"), href: "/dashboard/products", icon: ShoppingBag },
+    { name: t("db_sidebar_profile"), href: "/dashboard/profile", icon: Building },
+    { name: t("db_sidebar_inbox"), href: "/dashboard/inquiries", icon: Mail },
+    { name: t("db_sidebar_billing"), href: "/dashboard/billing", icon: CreditCard },
   ];
 
   const getAdminLinks = () => [
-    { name: "Admin Overview", href: "/dashboard", icon: LayoutDashboard },
-    { name: "Curation & Approvals", href: "/dashboard/curation", icon: ShieldCheck },
+    { name: t("db_admin_overview"), href: "/dashboard", icon: LayoutDashboard },
+    { name: t("db_sidebar_curation"), href: "/dashboard/curation", icon: ShieldCheck },
   ];
 
   const links = role === "admin" ? getAdminLinks() : getSmeLinks();
@@ -56,7 +58,7 @@ export default function DashboardSidebar() {
           </span>
         </Link>
         <p className="mt-2 text-[10px] uppercase font-bold tracking-widest text-[#57534E]">
-          Role: {role === "admin" ? "Super Admin" : "UMKM Partner"}
+          {t("db_sidebar_active_role")} {role === "admin" ? "Super Admin" : (language === "id" ? "Mitra UMKM" : "SME Partner")}
         </p>
       </div>
 
@@ -73,7 +75,11 @@ export default function DashboardSidebar() {
               ) : (
                 <Briefcase className="w-3.5 h-3.5 text-[#166534]" />
               )}
-              <span className="text-xs font-semibold">Switch to {role === "admin" ? "SME Portal" : "Admin Portal"}</span>
+              <span className="text-xs font-semibold">
+                {language === "id"
+                  ? `Beralih ke ${role === "admin" ? "Portal UMKM" : "Portal Admin"}`
+                  : `Switch to ${role === "admin" ? "SME Portal" : "Admin Portal"}`}
+              </span>
             </div>
           </button>
         </div>
@@ -117,14 +123,14 @@ export default function DashboardSidebar() {
                     const myCompany = companies.find((c) => c.id === currentUser.companyId);
                     if (myCompany?.isPremium) {
                       return (
-                        <span className="px-1.5 py-0.5 rounded-[4px] bg-[#166534] text-white text-[9px] font-bold uppercase tracking-wider">
+                        <span className="px-1.5 py-0.5 rounded-[4px] bg-[#166534] text-white text-[9px] font-bold uppercase tracking-wider animate-pulse">
                           Premium Supplier
                         </span>
                       );
                     }
                     return (
                       <span className="px-1.5 py-0.5 rounded-[4px] bg-[#A47148] text-white text-[9px] font-bold uppercase tracking-wider">
-                        Free Plan
+                        {language === "id" ? "Paket Gratis" : "Free Plan"}
                       </span>
                     );
                   })()}
@@ -140,7 +146,7 @@ export default function DashboardSidebar() {
             className="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-[8px] border border-red-200 hover:bg-red-50 text-[11px] font-bold text-[#B91C1C] cursor-pointer transition-all duration-200 bg-white"
           >
             <ShieldAlert className="w-3.5 h-3.5 text-[#B91C1C]" />
-            <span>Keluar (Log Out)</span>
+            <span>{t("nav_logout")}</span>
           </button>
         </div>
       )}
@@ -152,7 +158,7 @@ export default function DashboardSidebar() {
           className="w-full flex items-center justify-center gap-2 px-4 py-3.5 rounded-[12px] border border-[#A8A29E] hover:border-[#166534] hover:bg-[#F5F5EB] text-xs font-bold text-[#1C1917] cursor-pointer transition-all duration-200"
         >
           <ArrowLeft className="w-4 h-4 text-[#166534]" />
-          <span>Exit to Public Directory</span>
+          <span>{language === "id" ? "Kembali ke Beranda" : "Exit to Public Directory"}</span>
         </Link>
       </div>
     </aside>

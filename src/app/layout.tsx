@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DemoProvider } from "@/context/DemoContext";
+import { LanguageProvider } from "@/context/LanguageContext";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -16,9 +17,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full scroll-smooth antialiased" suppressHydrationWarning>
       <body className="min-h-full flex flex-col transition-colors duration-300">
-        <DemoProvider>
-          {children}
-        </DemoProvider>
+        <LanguageProvider>
+          <DemoProvider>
+            {children}
+          </DemoProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

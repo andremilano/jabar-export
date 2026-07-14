@@ -6,12 +6,14 @@ import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useDemo } from "@/context/DemoContext";
+import { useLanguage } from "@/context/LanguageContext";
 import { Search, ArrowRight, ShieldCheck, Globe2, BadgeCheck, Leaf, Coffee, Hammer, Scissors } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 export default function Home() {
   const router = useRouter();
   const { products } = useDemo();
+  const { language, t } = useLanguage();
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearchSubmit = (e: React.FormEvent) => {
@@ -23,40 +25,53 @@ export default function Home() {
     }
   };
 
-  const categories: { name: string; icon: LucideIcon; desc: string; capacity: string; iconBg: string; iconColor: string }[] = [
+  const categories: { name: string; icon: LucideIcon; iconBg: string; iconColor: string }[] = [
     {
       name: "Kopi",
       icon: Coffee,
-      desc: "Arabica & Robusta Specialty dari dataran tinggi Priangan",
-      capacity: "15,000+ kg/bulan",
       iconBg: "bg-[#F5F5EB]",
       iconColor: "text-[#A47148]",
     },
     {
       name: "Teh",
       icon: Leaf,
-      desc: "Teh Premium Highland dipetik segar di lereng pegunungan",
-      capacity: "10,000+ kg/bulan",
       iconBg: "bg-[#F5F5EB]",
       iconColor: "text-[#166534]",
     },
     {
       name: "Kriya",
       icon: Hammer,
-      desc: "Kerajinan rotan & kayu bernilai seni tinggi hasil pengrajin lokal",
-      capacity: "2,500+ pcs/bulan",
       iconBg: "bg-[#F5F5EB]",
       iconColor: "text-[#A47148]",
     },
     {
       name: "Tekstil",
       icon: Scissors,
-      desc: "Tenun sutra alam premium bermotif tradisional Sunda",
-      capacity: "1,200+ pcs/bulan",
       iconBg: "bg-[#F5F5EB]",
       iconColor: "text-[#166534]",
     },
   ];
+
+  const getCatName = (name: string) => {
+    if (name === "Kopi") return language === "id" ? "Kopi" : "Coffee";
+    if (name === "Teh") return language === "id" ? "Teh" : "Tea";
+    if (name === "Kriya") return language === "id" ? "Kriya" : "Crafts";
+    return language === "id" ? "Tekstil" : "Textiles";
+  };
+
+  const getCatDesc = (name: string) => {
+    if (name === "Kopi") return t("cat_coffee_desc");
+    if (name === "Teh") return t("cat_tea_desc");
+    if (name === "Kriya") return t("cat_craft_desc");
+    return t("cat_textile_desc");
+  };
+
+  const getCatCapacity = (name: string) => {
+    if (name === "Kopi") return language === "id" ? "15.000+ kg/bulan" : "15,000+ kg/month";
+    if (name === "Teh") return language === "id" ? "10.000+ kg/bulan" : "10,000+ kg/month";
+    if (name === "Kriya") return language === "id" ? "2.500+ pcs/bulan" : "2,500+ pcs/month";
+    return language === "id" ? "1.200+ pcs/bulan" : "1,200+ pcs/month";
+  };
 
   const featuredProducts = products.slice(0, 3);
 
@@ -71,21 +86,25 @@ export default function Home() {
             {/* Tagline */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-[4px] bg-[#F5F5EB] border border-[#D6D3D1] text-xs font-semibold text-[#166534]">
               <Leaf className="w-3.5 h-3.5 text-[#A47148]" />
-              <span>Jawa Barat B2B Export Gateway</span>
+              <span>{t("hero_badge")}</span>
             </div>
 
             {/* Title */}
-            <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight md:leading-none text-[#1C1917]">
-              Bridging West Java&apos;s Finest{" "}
-              <span className="text-[#166534]">
-                Commodities
-              </span>{" "}
-              to the Global Market
+            <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight md:leading-none text-[#1C1917] font-serif">
+              {language === "id" ? (
+                <>
+                  Menghubungkan <span className="text-[#166534]">Komoditas Terbaik</span> Jawa Barat ke Pasar Global
+                </>
+              ) : (
+                <>
+                  Bridging West Java&apos;s Finest <span className="text-[#166534]">Commodities</span> to the Global Market
+                </>
+              )}
             </h1>
 
             {/* Subtitle */}
             <p className="text-base md:text-lg text-[#57534E] max-w-2xl mx-auto leading-relaxed font-sans">
-              Jabar Export Hub menghubungkan importir internasional secara langsung dengan UMKM & Koperasi terkurasi Jawa Barat yang memiliki kapasitas produksi tinggi dan standar mutu ekspor dunia.
+              {t("hero_subtitle")}
             </p>
 
             {/* Search Bar */}
@@ -97,7 +116,7 @@ export default function Home() {
                 <Search className="w-5 h-5 text-[#57534E]" />
                 <input
                   type="text"
-                  placeholder="Search Arabica coffee, premium silk, rattan craft..."
+                  placeholder={t("hero_search_placeholder")}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full bg-transparent border-0 outline-none focus:ring-0 text-sm ml-3 text-[#1C1917] placeholder-[#A8A29E]"
@@ -107,7 +126,7 @@ export default function Home() {
                 type="submit"
                 className="btn-primary"
               >
-                Find Commodity
+                {t("hero_search_btn")}
               </button>
             </form>
 
@@ -115,15 +134,15 @@ export default function Home() {
             <div className="pt-6 grid grid-cols-2 md:grid-cols-3 gap-6 max-w-3xl mx-auto text-xs font-semibold text-[#57534E] border-t border-[#E7E5E4]">
               <div className="flex items-center justify-center gap-2">
                 <ShieldCheck className="w-5 h-5 text-[#166534]" />
-                <span>100% Curated & Verified NIB</span>
+                <span>{t("trust_verified")}</span>
               </div>
               <div className="flex items-center justify-center gap-2">
                 <Globe2 className="w-5 h-5 text-[#166534]" />
-                <span>Direct Global Negotiation</span>
+                <span>{t("trust_direct")}</span>
               </div>
               <div className="flex items-center justify-center gap-2 col-span-2 md:col-span-1">
                 <BadgeCheck className="w-5 h-5 text-[#166534]" />
-                <span>Independent B2B Trade Network</span>
+                <span>{t("trust_independent")}</span>
               </div>
             </div>
           </div>
@@ -134,10 +153,10 @@ export default function Home() {
       <section className="py-20 bg-[#F5F5EB]/30 border-t border-b border-[#E7E5E4]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-            <h2 className="text-2xl md:text-3xl font-bold text-[#1C1917]">Featured Commodities</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-[#1C1917] font-serif">{t("cat_title")}</h2>
             <div className="h-1.5 w-16 bg-[#A47148] mx-auto rounded-[4px]"></div>
             <p className="text-xs md:text-sm text-[#57534E]">
-              Jelajahi komoditas ekspor terbaik Jawa Barat berdasarkan kategori industri
+              {t("cat_subtitle")}
             </p>
           </div>
 
@@ -152,16 +171,16 @@ export default function Home() {
                   <div className={`inline-flex items-center justify-center mb-4 p-3 rounded-[8px] ${cat.iconBg}`}>
                     <cat.icon className={`w-6 h-6 ${cat.iconColor}`} />
                   </div>
-                  <h3 className="text-lg font-bold text-[#1C1917] group-hover:text-[#166534] transition-colors">
-                    {cat.name}
+                  <h3 className="text-lg font-bold text-[#1C1917] group-hover:text-[#166534] transition-colors font-serif">
+                    {getCatName(cat.name)}
                   </h3>
                   <p className="text-xs text-[#57534E] mt-2 leading-relaxed font-sans">
-                    {cat.desc}
+                    {getCatDesc(cat.name)}
                   </p>
                 </div>
                 <div className="mt-4 pt-4 border-t border-[#E7E5E4] flex items-center justify-between">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-[#A47148]">
-                    {cat.capacity}
+                    {getCatCapacity(cat.name)}
                   </span>
                   <ArrowRight className="w-4 h-4 text-[#166534] group-hover:translate-x-1 transition-all" />
                 </div>
@@ -177,16 +196,16 @@ export default function Home() {
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-4">
             <div>
               <span className="text-xs font-bold text-[#A47148] uppercase tracking-widest block mb-2 font-sans">
-                Premium Showcase
+                {t("showcase_badge")}
               </span>
-              <h2 className="text-2xl md:text-3xl font-bold text-[#1C1917]">Featured Export Commodities</h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-[#1C1917] font-serif">{t("showcase_title")}</h2>
               <div className="h-1 w-16 bg-[#166534] mt-3 rounded-[4px]"></div>
             </div>
             <Link
               href="/directory"
               className="inline-flex items-center gap-1 text-xs font-bold text-[#166534] hover:text-[#A47148] transition-colors font-sans"
             >
-              <span>Explore All Products</span>
+              <span>{t("showcase_explore")}</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -207,7 +226,7 @@ export default function Home() {
                   />
                   <div className="absolute top-4 left-4 flex flex-col gap-1.5">
                     <span className="px-2.5 py-1 rounded-[4px] text-[10px] font-extrabold uppercase bg-[#1C1917]/80 text-[#FAFAF5] backdrop-blur-sm">
-                      {prod.category}
+                      {getCatName(prod.category)}
                     </span>
                   </div>
                 </div>
@@ -237,16 +256,16 @@ export default function Home() {
                   {/* Specs footer */}
                   <div className="border-t border-[#E7E5E4] pt-4 mt-5 flex items-center justify-between font-sans">
                     <div>
-                      <p className="text-[10px] uppercase text-[#A8A29E] font-bold">Capacity</p>
+                      <p className="text-[10px] uppercase text-[#A8A29E] font-bold">{language === "id" ? "Kapasitas" : "Capacity"}</p>
                       <p className="text-xs font-bold text-[#1C1917]">
-                        {prod.monthlyCapacity.toLocaleString()} {prod.unit}/month
+                        {prod.monthlyCapacity.toLocaleString()} {prod.unit}/{language === "id" ? "bulan" : "month"}
                       </p>
                     </div>
                     <Link
                       href={`/product/${prod.id}`}
                       className="btn-secondary btn-sm"
                     >
-                      View Details
+                      {t("dir_view_details")}
                     </Link>
                   </div>
                 </div>
@@ -265,26 +284,26 @@ export default function Home() {
             {/* Callout */}
             <div className="space-y-6">
               <span className="text-xs font-extrabold text-[#86A873] uppercase tracking-widest block font-sans">
-                Partner with us
+                {t("cta_buyer_badge")}
               </span>
               <h2 className="text-3xl md:text-4xl font-extrabold leading-tight font-serif text-[#FAFAF5]">
-                Are you an International Buyer looking for reliable suppliers?
+                {t("cta_buyer_title")}
               </h2>
               <p className="text-xs md:text-sm text-[#A8A29E] leading-relaxed font-sans">
-                Platform kami mempermudah proses pencarian (sourcing) komoditas Jawa Barat. Anda dapat mengirimkan Request for Quotation (RFQ) langsung ke produsen tanpa perantara, memastikan efisiensi harga dan waktu.
+                {t("cta_buyer_desc")}
               </p>
               <div className="pt-2 flex flex-wrap gap-4 font-sans">
                 <Link
                   href="/directory"
                   className="px-6 py-3 rounded-[8px] bg-[#166534] hover:bg-[#14532D] text-white text-xs font-extrabold transition-all"
                 >
-                  Browse Catalog Directory
+                  {t("cta_buyer_btn_browse")}
                 </Link>
                 <a
                   href="#contact"
                   className="px-6 py-3 rounded-[8px] border border-[#57534E] hover:bg-white/5 text-white text-xs font-extrabold transition-all text-center"
                 >
-                  Contact Support
+                  {t("cta_buyer_btn_support")}
                 </a>
               </div>
             </div>
@@ -292,17 +311,17 @@ export default function Home() {
             {/* SME CTA Card */}
             <div className="p-8 rounded-[12px] bg-white text-[#1C1917] border border-[#D6D3D1] border-b-[3px] border-b-[#A8A29E] space-y-6">
               <span className="px-3 py-1 rounded-[4px] bg-[#F5F5EB] text-[10px] font-bold text-[#166534] tracking-wider uppercase inline-block font-sans">
-                For West Java SMEs
+                {t("cta_sme_badge")}
               </span>
-              <h3 className="text-xl font-bold font-serif text-[#1C1917]">UMKM Jawa Barat: Masuk ke Pasar Ekspor Global</h3>
+              <h3 className="text-xl font-bold font-serif text-[#1C1917]">{t("cta_sme_title")}</h3>
               <p className="text-xs text-[#57534E] leading-relaxed font-sans">
-                Tampilkan produk Anda ke pembeli dari Eropa, Amerika, Australia, dan Asia. Berlangganan status Premium untuk mendapatkan eksposur maksimal dan meningkatkan kepercayaan pembeli internasional.
+                {t("cta_sme_desc")}
               </p>
               <Link
                 href="/dashboard"
                 className="w-full btn-primary flex items-center justify-between px-5 py-3 rounded-[8px]"
               >
-                <span>Daftarkan Profil UMKM / Login Partner</span>
+                <span>{t("cta_sme_btn")}</span>
                 <ArrowRight className="w-4 h-4 text-white" />
               </Link>
             </div>

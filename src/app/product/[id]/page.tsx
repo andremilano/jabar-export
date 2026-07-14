@@ -5,6 +5,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useDemo } from "@/context/DemoContext";
+import { useLanguage } from "@/context/LanguageContext";
 import dynamic from "next/dynamic";
 
 const ProductMap = dynamic(() => import("@/components/ProductMap"), { ssr: false });
@@ -39,6 +40,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
   const productId = resolvedParams.id;
 
   const { products, companies, addInquiry } = useDemo();
+  const { language, t } = useLanguage();
   const [isModalOpen, setIsModalOpen] = useState(false);
   
   const [buyerName, setBuyerName] = useState("");
@@ -108,15 +110,31 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
     const formattedFob = formatVal(totalFob);
     const formattedCif = formatVal(totalCif);
     setMessage(
-      `Halo, kami tertarik untuk mengimpor komoditas ini.\n` +
-      `Berdasarkan kalkulator ekspor B2B, berikut perkiraan kebutuhan kami:\n` +
-      `- Kuantitas: ${calcQty.toLocaleString()} ${product.unit}\n` +
-      `- Pelabuhan Tujuan: ${selectedPort.name}\n` +
-      `- Estimasi Nilai FOB: ${formattedFob}\n` +
-      `- Estimasi Nilai CIF: ${formattedCif}\n\n` +
-      `Mohon berikan konfirmasi ketersediaan pasokan dan penawaran harga ekspor resmi Anda.`
+      language === "id"
+        ? `Halo, kami tertarik untuk mengimpor komoditas ini.\n` +
+          `Berdasarkan kalkulator ekspor B2B, berikut perkiraan kebutuhan kami:\n` +
+          `- Kuantitas: ${calcQty.toLocaleString()} ${product.unit}\n` +
+          `- Pelabuhan Tujuan: ${selectedPort.name}\n` +
+          `- Estimasi Nilai FOB: ${formattedFob}\n` +
+          `- Estimasi Nilai CIF: ${formattedCif}\n\n` +
+          `Mohon berikan konfirmasi ketersediaan pasokan dan penawaran harga ekspor resmi Anda.`
+        : `Hello, we are interested in importing this commodity.\n` +
+          `Based on the B2B export calculator, here is our estimated requirement:\n` +
+          `- Quantity: ${calcQty.toLocaleString()} ${product.unit}\n` +
+          `- Destination Port: ${selectedPort.name}\n` +
+          `- Estimated FOB Value: ${formattedFob}\n` +
+          `- Estimated CIF Value: ${formattedCif}\n\n` +
+          `Please provide availability confirmation and your official export quotation.`
     );
     setIsModalOpen(true);
+  };
+
+  const getLabelForCategory = (cat: string) => {
+    if (cat === "Kopi") return language === "id" ? "Kopi" : "Coffee";
+    if (cat === "Teh") return language === "id" ? "Teh" : "Tea";
+    if (cat === "Kriya") return language === "id" ? "Kriya" : "Crafts";
+    if (cat === "Tekstil") return language === "id" ? "Tekstil" : "Textiles";
+    return cat;
   };
 
   const handleRfqSubmit = (e: React.FormEvent) => {
@@ -153,12 +171,12 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
         <div className="flex items-center justify-between mb-8 text-xs font-medium text-[#57534E] font-sans">
           <Link href="/directory" className="inline-flex items-center gap-1.5 hover:text-[#166534] transition-colors">
             <ArrowLeft className="w-4 h-4 text-[#166534]" />
-            <span>Back to Directory</span>
+            <span>{t("prod_back")}</span>
           </Link>
           <div className="flex items-center gap-1">
-            <Link href="/" className="hover:underline">Home</Link>
+            <Link href="/" className="hover:underline">{t("nav_home")}</Link>
             <span>/</span>
-            <Link href="/directory" className="hover:underline">Directory</Link>
+            <Link href="/directory" className="hover:underline">{t("nav_directory")}</Link>
             <span>/</span>
             <span className="text-[#1C1917] truncate max-w-[200px] font-semibold">{product.name}</span>
           </div>
@@ -182,7 +200,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
               <div className="p-8 space-y-6">
                 <div>
                   <span className="px-3 py-1 rounded-[4px] bg-[#F5F5EB] border border-[#D6D3D1] text-[#166534] text-[10px] font-extrabold uppercase tracking-wider inline-block mb-3 font-sans">
-                    {product.category}
+                    {getLabelForCategory(product.category)}
                   </span>
                   <h1 className="text-2xl md:text-3xl font-extrabold text-[#1C1917] leading-tight font-serif">
                     {product.name}
@@ -191,19 +209,19 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
 
                 <div className="border-t border-b border-[#E7E5E4] py-5 grid grid-cols-2 sm:grid-cols-3 gap-6 font-sans">
                   <div>
-                    <p className="text-[10px] font-bold text-[#A8A29E] uppercase tracking-widest">Monthly Capacity</p>
+                    <p className="text-[10px] font-bold text-[#A8A29E] uppercase tracking-widest">{language === "id" ? "Kapasitas Bulanan" : "Monthly Capacity"}</p>
                     <p className="text-base font-bold text-[#1C1917] mt-1">
-                      {product.monthlyCapacity.toLocaleString()} {product.unit} / month
+                      {product.monthlyCapacity.toLocaleString()} {product.unit} / {language === "id" ? "bulan" : "month"}
                     </p>
                   </div>
                   <div>
-                    <p className="text-[10px] font-bold text-[#A8A29E] uppercase tracking-widest">Min Order Requirement</p>
+                    <p className="text-[10px] font-bold text-[#A8A29E] uppercase tracking-widest">{t("prod_min_order")}</p>
                     <p className="text-base font-bold text-[#1C1917] mt-1">
-                      Negotiable
+                      {t("prod_min_order_val")}
                     </p>
                   </div>
                   <div>
-                    <p className="text-[10px] font-bold text-[#A8A29E] uppercase tracking-widest">IncoTerm Options</p>
+                    <p className="text-[10px] font-bold text-[#A8A29E] uppercase tracking-widest">{t("prod_incoterms")}</p>
                     <p className="text-base font-bold text-[#1C1917] mt-1">
                       FOB / CIF
                     </p>
@@ -211,30 +229,30 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                 </div>
 
                 <div className="space-y-3 font-sans">
-                  <h3 className="text-sm font-bold text-[#1C1917] font-serif">Product Description</h3>
+                  <h3 className="text-sm font-bold text-[#1C1917] font-serif">{t("prod_desc_title")}</h3>
                   <p className="text-xs md:text-sm text-[#57534E] leading-relaxed">
                     {product.description}
                   </p>
                 </div>
 
                 <div className="space-y-3 font-sans">
-                  <h3 className="text-sm font-bold text-[#1C1917] font-serif">Product Specifications</h3>
+                  <h3 className="text-sm font-bold text-[#1C1917] font-serif">{t("prod_specs_title")}</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-[#F5F5EB] p-4 rounded-[8px] border border-[#D6D3D1]">
                     <div className="flex justify-between py-1.5 border-b border-[#D6D3D1]">
-                      <span className="text-[#57534E] font-medium">Origin Location</span>
+                      <span className="text-[#57534E] font-medium">{t("prod_spec_origin")}</span>
                       <span className="font-bold text-[#1C1917]">{company?.location.split(",")[0] || "West Java"}</span>
                     </div>
                     <div className="flex justify-between py-1.5 border-b border-[#D6D3D1]">
-                      <span className="text-[#57534E] font-medium">Standard Grade</span>
-                      <span className="font-bold text-[#1C1917]">Export Premium</span>
+                      <span className="text-[#57534E] font-medium">{t("prod_spec_grade")}</span>
+                      <span className="font-bold text-[#1C1917]">{t("prod_spec_grade_val")}</span>
                     </div>
                     <div className="flex justify-between py-1.5 border-b border-[#D6D3D1]">
-                      <span className="text-[#57534E] font-medium">Packaging Unit</span>
-                      <span className="font-bold text-[#1C1917]">Export Standard Bag / Box</span>
+                      <span className="text-[#57534E] font-medium">{t("prod_spec_packaging")}</span>
+                      <span className="font-bold text-[#1C1917]">{t("prod_spec_packaging_val")}</span>
                     </div>
                     <div className="flex justify-between py-1.5 border-b border-[#D6D3D1]">
-                      <span className="text-[#57534E] font-medium">Moisture / Spec</span>
-                      <span className="font-bold text-[#1C1917]">SGS Quality Inspected</span>
+                      <span className="text-[#57534E] font-medium">{language === "id" ? "Kadar Air / Spesifikasi" : "Moisture / Spec"}</span>
+                      <span className="font-bold text-[#1C1917]">{t("prod_spec_inspection_val")}</span>
                     </div>
                   </div>
                 </div>
@@ -245,7 +263,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
             <div className="p-8 bg-white rounded-[12px] border border-[#E7E5E4] border-b-2 border-b-[#D6D3D1] space-y-6">
               <h3 className="text-sm font-bold text-[#1C1917] uppercase tracking-wider flex items-center gap-2 font-serif">
                 <FileText className="w-5 h-5 text-[#166534]" />
-                <span>Certifications & Compliance</span>
+                <span>{t("prod_certs_title")}</span>
               </h3>
               
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 font-sans">
@@ -259,7 +277,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                     </div>
                     <div>
                       <p className="text-xs font-bold text-[#1C1917]">{cert}</p>
-                      <p className="text-[10px] text-[#A8A29E] font-semibold mt-0.5">Verified</p>
+                      <p className="text-[10px] text-[#A8A29E] font-semibold mt-0.5">{t("prod_certs_verified")}</p>
                     </div>
                   </div>
                 ))}
@@ -272,25 +290,25 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                 <div className="flex items-center gap-2">
                   <Calculator className="w-5 h-5 text-[#166534]" />
                   <h3 className="text-sm font-bold text-[#1C1917] uppercase tracking-wider font-serif">
-                    B2B Export Cost Calculator
+                    {t("calc_title")}
                   </h3>
                 </div>
                 <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-[4px] bg-[#F5F5EB] border border-[#D6D3D1] text-[10px] font-bold text-[#166534] uppercase tracking-wider">
                   <Globe2 className="w-3.5 h-3.5" />
-                  <span>Port of Tanjung Priok / Patimban Origin</span>
+                  <span>{t("calc_origin")}</span>
                 </div>
               </div>
 
               <p className="text-xs text-[#57534E] leading-relaxed">
-                Estimasikan rincian biaya dari pabrik (Ex-Works) hingga ke pelabuhan tujuan Anda (FOB & CIF) secara instan.
+                {t("calc_desc")}
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 font-sans">
                 {/* Qty Input */}
                 <div className="space-y-1">
                   <label className="input-label flex items-center justify-between">
-                    <span>Quantity ({product.unit})</span>
-                    <span className="text-[10px] text-[#A8A29E] font-medium">Base Price: {formatVal(basePricePerUnit)}</span>
+                    <span>{t("calc_qty")} ({product.unit})</span>
+                    <span className="text-[10px] text-[#A8A29E] font-medium">{t("calc_base_price")} {formatVal(basePricePerUnit)}</span>
                   </label>
                   <input
                     type="number"
@@ -303,7 +321,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
 
                 {/* Port Select */}
                 <div className="space-y-1">
-                  <label className="input-label">Destination Port</label>
+                  <label className="input-label">{t("calc_port")}</label>
                   <select
                     value={selectedPort.name}
                     onChange={(e) => {
@@ -322,7 +340,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
 
                 {/* Currency Select */}
                 <div className="space-y-1">
-                  <label className="input-label">Display Currency</label>
+                  <label className="input-label">{t("calc_currency")}</label>
                   <select
                     value={selectedCurrency.code}
                     onChange={(e) => {
@@ -343,20 +361,20 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
               {/* Price Flow Chart (Visual Steps) */}
               <div className="bg-[#F5F5EB]/50 p-4 rounded-[8px] border border-[#D6D3D1] font-sans">
                 <div className="text-[10px] font-bold text-[#A47148] uppercase tracking-wider mb-3">
-                  Cost Accumulation Flow
+                  {t("calc_flow_title")}
                 </div>
                 <div className="grid grid-cols-3 gap-2 text-center text-xs">
                   <div className="p-3 bg-white rounded-[6px] border border-[#D6D3D1] flex flex-col justify-between">
-                    <span className="text-[9px] uppercase tracking-wide text-[#57534E] font-medium">Ex-Works</span>
+                    <span className="text-[9px] uppercase tracking-wide text-[#57534E] font-medium">{t("calc_flow_exworks")}</span>
                     <span className="font-bold text-[#1C1917] mt-1.5 break-all">{formatVal(exWorksVal)}</span>
                   </div>
                   <div className="p-3 bg-white rounded-[6px] border border-[#166534] flex flex-col justify-between relative overflow-hidden">
                     <div className="absolute top-0 inset-x-0 h-1 bg-[#166534]"></div>
-                    <span className="text-[9px] uppercase tracking-wide text-[#166534] font-bold">FOB (Pelabuhan)</span>
+                    <span className="text-[9px] uppercase tracking-wide text-[#166534] font-bold">{t("calc_flow_fob")}</span>
                     <span className="font-extrabold text-[#166534] mt-1.5 break-all">{formatVal(fobVal)}</span>
                   </div>
                   <div className="p-3 bg-[#166534] rounded-[6px] text-white flex flex-col justify-between">
-                    <span className="text-[9px] uppercase tracking-wide text-[#86A873] font-bold">CIF (Tujuan)</span>
+                    <span className="text-[9px] uppercase tracking-wide text-[#86A873] font-bold">{t("calc_flow_cif")}</span>
                     <span className="font-extrabold text-white mt-1.5 break-all">{formatVal(cifVal)}</span>
                   </div>
                 </div>
@@ -365,13 +383,13 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
               {/* Breakdown Table */}
               <div className="border border-[#D6D3D1] rounded-[8px] overflow-hidden font-sans text-xs bg-white">
                 <div className="bg-[#F5F5EB] px-4 py-2 text-[10px] font-bold text-[#1C1917] uppercase tracking-wider border-b border-[#D6D3D1]">
-                  Cost Breakdown Estimation
+                  {t("calc_table_title")}
                 </div>
                 <div className="divide-y divide-[#E7E5E4]">
                   {/* ExWorks */}
                   <div className="px-4 py-2.5 flex items-center justify-between">
                     <div>
-                      <span className="font-semibold text-[#1C1917]">Commodity Cost (Ex-Works)</span>
+                      <span className="font-semibold text-[#1C1917]">{t("calc_table_exworks")}</span>
                       <p className="text-[10px] text-[#57534E]">{calcQty.toLocaleString()} {product.unit} @ {formatVal(basePricePerUnit)}</p>
                     </div>
                     <span className="font-bold text-[#1C1917]">{formatVal(exWorksVal)}</span>
@@ -380,23 +398,23 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                   {/* Local transport */}
                   <div className="px-4 py-2.5 flex items-center justify-between">
                     <div>
-                      <span className="font-semibold text-[#1C1917]">Local Transport & Document Fees</span>
-                      <p className="text-[10px] text-[#57534E]">Trucking to port, customs clearance & THC</p>
+                      <span className="font-semibold text-[#1C1917]">{t("calc_table_local")}</span>
+                      <p className="text-[10px] text-[#57534E]">{t("calc_table_local_desc")}</p>
                     </div>
                     <span className="font-bold text-[#1C1917]">{formatVal(localTransportVal + exportDocsVal + localHandlingVal)}</span>
                   </div>
 
                   {/* FOB */}
                   <div className="px-4 py-2.5 flex items-center justify-between bg-[#F5F5EB]/30 border-t-2 border-b-2 border-t-[#D6D3D1] border-b-[#D6D3D1]">
-                    <span className="font-bold text-[#166534]">FOB Tanjung Priok / Patimban Est.</span>
+                    <span className="font-bold text-[#166534]">{t("calc_table_fob")}</span>
                     <span className="font-extrabold text-[#166534]">{formatVal(fobVal)}</span>
                   </div>
 
                   {/* Freight */}
                   <div className="px-4 py-2.5 flex items-center justify-between">
                     <div>
-                      <span className="font-semibold text-[#1C1917]">Ocean Freight Cost</span>
-                      <p className="text-[10px] text-[#57534E]">To {selectedPort.name} (~{selectedPort.days} days)</p>
+                      <span className="font-semibold text-[#1C1917]">{t("calc_table_freight")}</span>
+                      <p className="text-[10px] text-[#57534E]">{t("calc_table_freight_desc", { port: selectedPort.name.split(",")[0], days: selectedPort.days })}</p>
                     </div>
                     <span className="font-bold text-[#1C1917]">{formatVal(oceanFreightVal)}</span>
                   </div>
@@ -404,15 +422,15 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                   {/* Insurance */}
                   <div className="px-4 py-2.5 flex items-center justify-between">
                     <div>
-                      <span className="font-semibold text-[#1C1917]">Marine Cargo Insurance</span>
-                      <p className="text-[10px] text-[#57534E]">All-risk marine transit coverage (0.3%)</p>
+                      <span className="font-semibold text-[#1C1917]">{t("calc_table_insurance")}</span>
+                      <p className="text-[10px] text-[#57534E]">{t("calc_table_insurance_desc")}</p>
                     </div>
                     <span className="font-bold text-[#1C1917]">{formatVal(insuranceVal)}</span>
                   </div>
 
                   {/* CIF */}
                   <div className="px-4 py-3 flex items-center justify-between bg-[#166534]/10 border-t-2 border-t-[#166534]/20">
-                    <span className="font-bold text-[#1C1917] text-sm">Estimated CIF {selectedPort.code} Value</span>
+                    <span className="font-bold text-[#1C1917] text-sm">{t("calc_table_cif", { port: selectedPort.code })}</span>
                     <span className="font-extrabold text-[#166534] text-sm">{formatVal(cifVal)}</span>
                   </div>
                 </div>
@@ -425,7 +443,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                   className="w-full sm:w-auto btn-secondary text-xs px-5 py-3 font-extrabold flex items-center justify-center gap-2 cursor-pointer rounded-[8px]"
                 >
                   <Send className="w-4 h-4 text-[#166534]" />
-                  <span>Use Calculations in RFQ Form</span>
+                  <span>{t("calc_btn_use")}</span>
                 </button>
               </div>
             </div>
@@ -435,10 +453,10 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
               <div className="p-8 bg-white rounded-[12px] border border-[#E7E5E4] border-b-2 border-b-[#D6D3D1] space-y-6">
                 <h3 className="text-sm font-bold text-[#1C1917] uppercase tracking-wider flex items-center gap-2 font-serif">
                   <MapPin className="w-5 h-5 text-[#166534]" />
-                  <span>Production Facility Location</span>
+                  <span>{t("prod_map_title")}</span>
                 </h3>
                 <p className="text-xs text-[#57534E] leading-relaxed font-sans">
-                  Lokasi produksi dan operasional resmi dari <b>{company.name}</b> yang telah terdaftar di Jawa Barat.
+                  {t("prod_map_desc")} <b>{company.name}</b>.
                 </p>
                 <ProductMap 
                   lat={Number(company.latitude)} 
@@ -458,7 +476,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
               <div className="space-y-4">
                 <div className="flex items-start justify-between">
                   <div>
-                    <p className="text-[10px] font-extrabold uppercase tracking-widest text-[#A8A29E]">Supplier</p>
+                    <p className="text-[10px] font-extrabold uppercase tracking-widest text-[#A8A29E]">{t("prod_supplier_badge")}</p>
                     <h2 className="text-lg font-bold text-[#1C1917] mt-1 font-serif">
                       {product.companyName}
                     </h2>
@@ -472,11 +490,11 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                 {company?.isVerified ? (
                   <div className="flex items-center gap-2 px-3 py-2 rounded-[4px] bg-[#DCFCE7] border border-[#86EFAC] text-[11px] font-bold text-[#166534] uppercase tracking-wider">
                     <ShieldCheck className="w-4 h-4 fill-current" />
-                    <span>Verified Export Partner</span>
+                    <span>{t("prod_supplier_verified")}</span>
                   </div>
                 ) : (
                   <div className="flex items-center gap-2 px-3 py-2 rounded-[4px] bg-[#F5F5EB] border border-[#D6D3D1] text-[11px] font-semibold text-[#57534E]">
-                    <span>Curating Documents...</span>
+                    <span>{t("prod_supplier_curating")}</span>
                   </div>
                 )}
 
@@ -491,7 +509,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                   </div>
                   <div className="flex items-center gap-2.5 text-[#57534E]">
                     <Calendar className="w-4 h-4 text-[#166534]" />
-                    <span>Established {company?.establishedYear}</span>
+                    <span>{t("prod_supplier_established", { year: company?.establishedYear || 2015 })}</span>
                   </div>
                 </div>
               </div>
@@ -502,11 +520,11 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                 className="w-full btn-primary py-4 cursor-pointer"
               >
                 <Send className="w-4 h-4 mr-2" />
-                <span>Request a Quote</span>
+                <span>{t("prod_btn_rfq")}</span>
               </button>
 
               <p className="text-[10px] text-center text-[#57534E] leading-normal">
-                Sistem akan menyalurkan inquiries langsung kepada pimpinan koperasi dan mengirimkan notifikasi. UMKM akan merespons langsung via email Anda.
+                {t("prod_rfq_desc")}
               </p>
             </div>
           </div>
@@ -530,12 +548,12 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
               // Success Screen
               <div className="py-12 text-center space-y-4 animate-in fade-in zoom-in-95 font-sans">
                 <CheckCircle className="w-16 h-16 text-[#166534] mx-auto" />
-                <h3 className="text-xl font-bold text-[#1C1917] font-serif">Quote Request Submitted</h3>
+                <h3 className="text-xl font-bold text-[#1C1917] font-serif">{t("rfq_success_title")}</h3>
                 <p className="text-xs text-[#57534E] max-w-sm mx-auto">
-                  RFQ telah berhasil dikirimkan ke database lokal. Notifikasi email simulasi telah dikirimkan ke pemilik produk.
+                  {t("rfq_success_desc")}
                 </p>
                 <div className="inline-flex items-center gap-1 text-[10px] font-bold text-[#A47148] uppercase tracking-widest bg-[#F5F5EB] px-3 py-1 rounded-[4px] border border-[#D6D3D1] animate-pulse">
-                  <span>Routing to Partner Inbox...</span>
+                  <span>{t("rfq_success_badge")}</span>
                 </div>
               </div>
             ) : (
@@ -543,13 +561,13 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
               <form onSubmit={handleRfqSubmit} className="space-y-6">
                 <div>
                   <span className="text-[10px] font-bold text-[#A47148] uppercase tracking-widest block mb-1 font-sans">
-                    Send RFQ
+                    {t("rfq_title")}
                   </span>
                   <h3 className="text-lg font-bold text-[#1C1917] leading-tight font-serif">
-                    Inquire: {product.name}
+                    {t("rfq_subtitle", { name: product.name })}
                   </h3>
                   <p className="text-xs text-[#57534E] mt-1 font-sans">
-                    Supplier: <span className="font-semibold text-[#1C1917]">{product.companyName}</span>
+                    {t("rfq_supplier", { name: product.companyName })}
                   </p>
                 </div>
 
@@ -557,7 +575,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                   {/* Row 1 */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <label className="input-label">Your Name</label>
+                      <label className="input-label">{t("rfq_name")}</label>
                       <input
                         type="text"
                         required
@@ -568,7 +586,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="input-label">Your Email</label>
+                      <label className="input-label">{t("rfq_email")}</label>
                       <input
                         type="email"
                         required
@@ -583,7 +601,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                   {/* Row 2 */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <label className="input-label">Destination Country</label>
+                      <label className="input-label">{t("rfq_country")}</label>
                       <input
                         type="text"
                         required
@@ -594,7 +612,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="input-label">Quantity Needed ({product.unit})</label>
+                      <label className="input-label">{t("rfq_quantity")} ({product.unit})</label>
                       <input
                         type="number"
                         required
@@ -609,10 +627,10 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
 
                   {/* Message */}
                   <div className="space-y-1">
-                    <label className="input-label">Negotiation / Details Message</label>
+                    <label className="input-label">{t("rfq_message")}</label>
                     <textarea
                       rows={4}
-                      placeholder="Discuss target price, shipping terms, sample requirements..."
+                      placeholder={t("rfq_message_placeholder")}
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                       className="input-text h-auto py-3"
@@ -624,7 +642,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                   type="submit"
                   className="btn-primary w-full py-3.5 cursor-pointer font-extrabold uppercase tracking-wider"
                 >
-                  Send Inquiry Request
+                  {t("rfq_btn_send")}
                 </button>
               </form>
             )}
