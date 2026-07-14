@@ -23,6 +23,7 @@ export default function DashboardProducts() {
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [selectedCerts, setSelectedCerts] = useState<string[]>([]);
+  const [basePrice, setBasePrice] = useState("");
 
   const certOptions = ["Halal", "HACCP", "Fair Trade", "SVLK", "Organic Indonesia"];
 
@@ -35,6 +36,7 @@ export default function DashboardProducts() {
     setDescription("");
     setImageUrl("");
     setSelectedCerts([]);
+    setBasePrice("");
     setIsOpen(true);
   };
 
@@ -47,6 +49,7 @@ export default function DashboardProducts() {
     setDescription(prod.description);
     setImageUrl(prod.imageUrl);
     setSelectedCerts(prod.certifications);
+    setBasePrice(prod.basePrice?.toString() || "");
     setIsOpen(true);
   };
 
@@ -79,6 +82,7 @@ export default function DashboardProducts() {
         description,
         imageUrl: finalImageUrl,
         certifications: selectedCerts,
+        basePrice: Number(basePrice) || 0,
       });
     } else {
       addProduct({
@@ -89,6 +93,7 @@ export default function DashboardProducts() {
         description,
         imageUrl: finalImageUrl,
         certifications: selectedCerts,
+        basePrice: Number(basePrice) || 0,
       });
     }
 
@@ -239,7 +244,7 @@ export default function DashboardProducts() {
                   />
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Category */}
                   <div className="space-y-1">
                     <label className="input-label">Category</label>
@@ -255,6 +260,23 @@ export default function DashboardProducts() {
                     </select>
                   </div>
 
+                  {/* Base Price */}
+                  <div className="space-y-1">
+                    <label className="input-label">Base Price (USD / Unit)</label>
+                    <input
+                      type="number"
+                      required
+                      min="0.01"
+                      step="0.01"
+                      placeholder="e.g. 8.50"
+                      value={basePrice}
+                      onChange={(e) => setBasePrice(e.target.value)}
+                      className="input-text"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Capacity */}
                   <div className="space-y-1">
                     <label className="input-label">Monthly Capacity</label>

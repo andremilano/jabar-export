@@ -30,6 +30,7 @@ export interface Product {
   description: string;
   imageUrl: string;
   certifications: string[];
+  basePrice: number;
 }
 
 export interface Inquiry {
@@ -157,6 +158,7 @@ const initialProducts: Product[] = [
     description: "Biji kopi Arabika pilihan yang ditanam di ketinggian 1.400 mdpl. Memiliki profil rasa buah (fruity) yang cerah, keasaman sedang, dengan notes gula aren dan teh hitam di bagian akhir. Cocok untuk roaster internasional.",
     imageUrl: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=600&auto=format&fit=crop",
     certifications: ["Halal", "Organic Indonesia", "Fair Trade"],
+    basePrice: 8.0,
   },
   {
     id: "prod-2",
@@ -169,6 +171,7 @@ const initialProducts: Product[] = [
     description: "Sarung sutra eksklusif yang ditenun secara manual menggunakan ATBM (Alat Tenun Bukan Mesin). Memiliki tekstur halus, kilau alami yang menawan, dan motif khusus Priangan yang tidak luntur karena menggunakan pewarna alami.",
     imageUrl: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?q=80&w=600&auto=format&fit=crop",
     certifications: ["Halal", "Indonesian Handwoven Certification"],
+    basePrice: 45.0,
   },
   {
     id: "prod-3",
@@ -181,6 +184,7 @@ const initialProducts: Product[] = [
     description: "Kursi santai rotan dengan rangka kayu mahoni solid. Desain ergonomis yang sangat nyaman digunakan untuk area lounge atau teras. Tahan cuaca dan telah di-treatment antijamur untuk standar pengiriman kontainer internasional.",
     imageUrl: "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?q=80&w=600&auto=format&fit=crop",
     certifications: ["SVLK (Sistem Verifikasi Legalitas Kayu)"],
+    basePrice: 90.0,
   },
   {
     id: "prod-4",
@@ -193,6 +197,7 @@ const initialProducts: Product[] = [
     description: "Teh hijau premium hasil petikan pucuk daun teh segar di pagi hari dari lereng Gunung Patuha. Diproses dengan pemanasan uap minimal untuk menjaga aroma rumput segar yang manis, kaya antioksidan, dan rasa umami yang seimbang.",
     imageUrl: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?q=80&w=600&auto=format&fit=crop",
     certifications: ["Halal", "HACCP", "Organic Indonesia"],
+    basePrice: 12.0,
   },
 ];
 
